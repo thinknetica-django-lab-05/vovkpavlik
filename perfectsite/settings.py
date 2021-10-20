@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
