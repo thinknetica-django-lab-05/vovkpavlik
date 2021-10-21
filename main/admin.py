@@ -5,8 +5,14 @@ from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 
 
-class FlatPageAdmin(admin.ModelAdmin):
+class FlatPageAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
+    class Meta:
+        model = FlatPage
+        fields = '__all__'
+
+class FlatPageAdmin(admin.ModelAdmin):
+    form = FlatPageAdminForm
 
 
 admin.site.unregister(FlatPage)
