@@ -17,6 +17,11 @@ class FlatPageAdmin(admin.ModelAdmin):
     form = FlatPageAdminForm
 
 
+
+class SellerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'get_count_adds')
+
+
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",)
@@ -26,3 +31,4 @@ class CategoryAdmin(admin.ModelAdmin):
 # admin.site.unregister(FlatPage)
 # admin.site.register(FlatPage, FlatPageAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Seller, SellerAdmin)

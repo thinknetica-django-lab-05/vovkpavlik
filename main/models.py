@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
+    @property
+    def get_count_adds(self):
+        return 2
+
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
