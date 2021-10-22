@@ -17,5 +17,12 @@ class FlatPageAdmin(admin.ModelAdmin):
     form = FlatPageAdminForm
 
 
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, FlatPageAdmin)
+class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {
+        "slug": ("title",)
+    }
+
+
+# admin.site.unregister(FlatPage)
+# admin.site.register(FlatPage, FlatPageAdmin)
+admin.site.register(Category, CategoryAdmin)
