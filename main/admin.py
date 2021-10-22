@@ -11,24 +11,37 @@ class FlatPageAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
     class Meta:
         model = FlatPage
-        fields = '__all__'
+        fields = "__all__"
 
 class FlatPageAdmin(admin.ModelAdmin):
     form = FlatPageAdminForm
 
 
-
+@admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'get_count_adds')
+    list_display = ["user", "get_count_adds"]
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",)
     }
 
 
-# admin.site.unregister(FlatPage)
-# admin.site.register(FlatPage, FlatPageAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Seller, SellerAdmin)
+@admin.register(Ad)
+class AdAdmin(admin.ModelAdmin):
+    list_display = [
+        "seller",
+        "category",
+        "title",
+        "created_at",
+        "updated_at"
+    ]
+
+
+admin.site.register(Tag)
+
+
+
+
