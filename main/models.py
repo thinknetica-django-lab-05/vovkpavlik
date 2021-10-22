@@ -14,6 +14,9 @@ class Category(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, allow_unicode=True)
 
+    class Meta:
+        verbose_name_plural = "Categories" 
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=255)

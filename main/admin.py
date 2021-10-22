@@ -41,7 +41,3 @@ class AdAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Tag)
-
-
-
-
