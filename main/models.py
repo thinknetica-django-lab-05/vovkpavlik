@@ -8,7 +8,7 @@ class Seller(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(prepopulate_from=('title',))
+    slug = models.SlugField(max_length=255)
 
 
 class Tag(models.Model):
