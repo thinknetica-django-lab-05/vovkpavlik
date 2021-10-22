@@ -2,20 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Seller(models.model):
+class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
 
-class Category(models.model):
+class Category(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(prepopulate_from=('title',))
 
 
-class Tag(models.model):
+class Tag(models.Model):
     title = models.CharField(max_length=255)
 
 
-class Ad(models.model):
+class Ad(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
