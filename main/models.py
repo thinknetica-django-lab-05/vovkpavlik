@@ -23,3 +23,7 @@ class Ad(models.model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     link = models.ManyToManyField(Tag)
+
+
+    def __str__(self):
+        return self.title
