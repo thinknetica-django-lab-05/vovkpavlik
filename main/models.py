@@ -8,7 +8,7 @@ class Seller(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, allow_unicode=True)
 
 
 class Tag(models.Model):
