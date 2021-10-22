@@ -12,11 +12,14 @@ class Category(models.model):
 
 
 class Tag(models.model):
-    pass
+    title = models.CharField(max_length=255)
 
 
-class Ads(models.model):
+class Ad(models.model):
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    link = models.ManyToManyField(Tag)
