@@ -11,11 +11,22 @@ for user in users:
 
 
 #Create sellers
-from main.models import Seller
 users = User.objects.all()
 
 for user in users:
     Seller.objects.create(user=user)
+
+
+#Create categories
+categories = ["Антиквариат", "Музыкальное оборудование", "Одежда", "Копьютерная техника"]
+
+for category in categories:
+    Category.objects.create(title=category)
+
+
+#Create ads
+
+
 
 
 
