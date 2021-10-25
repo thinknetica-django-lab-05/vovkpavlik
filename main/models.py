@@ -8,7 +8,10 @@ class Seller(models.Model):
 
     @property
     def get_count_adds(self):
-        return 2
+        filtered_seller = Ad.objects.filter(seller=self)
+        adds_num = filtered_seller.count()
+        
+        return adds_num
 
 
 class Category(models.Model):
@@ -38,3 +41,4 @@ class Ad(models.Model):
 
     def __str__(self):
         return self.title
+
