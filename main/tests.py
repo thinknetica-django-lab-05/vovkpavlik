@@ -74,3 +74,10 @@ hat_s_2.tag.set([tag_anticvariat, tag_clothes, tag_old])
 notebook_s_3.tag.set([tag_notebooks, tag_work, tag_comp])
 monitor_s_3.tag.set([tag_music, tag_work, tag_comp])
 audio_system.tag.set([tag_work, tag_comp, tag_music, tag_anticvariat])
+
+
+#Filter by category
+filter_by_anticvariat = Ad.objects.filter(category=anticvar)
+filter_by_music = Ad.objects.filter(category=music)
+filter_by_clothes = Ad.objects.filter(category=clothes)
+filter_by_comp = Ad.objects.filter(category=comp)
