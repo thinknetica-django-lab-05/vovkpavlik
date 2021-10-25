@@ -42,18 +42,35 @@ elephant_s_1 = Ad.objects.create(seller=seller_1, category=anticvar, title="Сл
 piano_s_1 = Ad.objects.create(seller=seller_1, category=music, title="Старое фортепиано", description="Досталось от бабушки. Состояние - отличное")
 gun_s_1 = Ad.objects.create(seller=seller_1, category=anticvar, title="Ружье 18 века", description="Не стреляет")
 
+guitar_s_2 = Ad.objects.create(seller=seller_2, category=music, title="Гитара Курта Кобейна", description="Настоящая")
+piano_s_2 = Ad.objects.create(seller=seller_2, category=music, title="Фортепиано", description="Фортепиано из слоновой кости")
+hat_s_2 = Ad.objects.create(seller=seller_2, category=clothes, title="Шляпа-циллиндр", description="Настоящая шляпа Авраама Линкольна")
+
+notebook_s_3 = Ad.objects.create(seller=seller_3, category=comp, title="Macbook 13 Pro Retina/256gb", description="Новый ноутбук в хорошем состоянии")
+monitor_s_3 = Ad.objects.create(seller=seller_3, category=comp, title="Монитор Dell, 25' ", description="Игровой 144 гц монитор со встроенными динамиками")
+audio_system = Ad.objects.create(seller=seller_3, category=music, title="Мониторы для сведения JBL", description="Одни из первых аудио-систем для звукорежисеров. Почти антиквариат!")
+
+
 tag_anticvariat = Tag.objects.create(title="Антиквариат")
 tag_exotic = Tag.objects.create(title="Экзотика")
 tag_elephant_bone = Tag.objects.create(title="Слоновая кость")
 tag_old = Tag.objects.create(title="Предметы старины")
 tag_gun = Tag.objects.create(title="Оружие")
 tag_music = Tag.objects.create(title="музыка")
+tag_clothes = Tag.objects.create(title="Одежда")
+tag_notebooks = Tag.objects.create(title="Ноутбуки")
+tag_work = Tag.objects.create(title="Для работы")
+tag_comp = Tag.objects.create(title="Компьютерная техника")
+
 
 elephant_s_1.tag.set([tag_anticvariat, tag_exotic, tag_elephant_bone])
 piano_s_1.tag.set([tag_anticvariat, tag_old, tag_music])
-tag_music = Tag.objects.create(title="музыка")
+gun_s_1.tag.set([tag_anticvariat, tag_old, tag_gun])
 
+guitar_s_2.tag.set([tag_anticvariat, tag_music, tag_exotic])
+piano_s_2.tag.set([tag_anticvariat, tag_music, tag_exotic, tag_elephant_bone])
+hat_s_2.tag.set([tag_anticvariat, tag_clothes, tag_old])
 
-
-
-
+notebook_s_3.tag.set([tag_notebooks, tag_work, tag_comp])
+monitor_s_3.tag.set([tag_music, tag_work, tag_comp])
+audio_system.tag.set([tag_work, tag_comp, tag_music, tag_anticvariat])
