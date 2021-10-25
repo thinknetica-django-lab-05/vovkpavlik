@@ -81,3 +81,9 @@ filter_by_anticvariat = Ad.objects.filter(category=anticvar)
 filter_by_music = Ad.objects.filter(category=music)
 filter_by_clothes = Ad.objects.filter(category=clothes)
 filter_by_comp = Ad.objects.filter(category=comp)
+
+
+# Count ads for sellers
+for seller in Seller.objects.all():
+    filter_sellers = Ad.objects.filter(seller=seller)
+    filter_sellers.count()
