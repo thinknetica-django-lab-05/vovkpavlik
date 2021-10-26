@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class BaseModel(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default="Ad name")
 
     class Meta:
         abstract=True
@@ -34,7 +34,7 @@ class Tag(BaseModel):
     
     def __str__(self):
         return self.title
-        
+
 
 class Ad(BaseModel):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
