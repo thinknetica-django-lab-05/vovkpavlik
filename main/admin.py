@@ -25,7 +25,7 @@ class SellerAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {
-        "slug": ("title",)
+        "slug": ("name",)
     }
 
 
@@ -34,7 +34,7 @@ class AdAdmin(admin.ModelAdmin):
     list_display = [
         "seller",
         "category",
-        "title",
+        "name",
         "price",
         "created_at",
         "updated_at"
