@@ -20,25 +20,25 @@ class Seller(models.Model):
         return adds_num
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=255)
+class Category(BaseModel):
     slug = models.SlugField(max_length=255, allow_unicode=True)
 
     class Meta:
         verbose_name_plural = "Categories" 
-    
+
     def __str__(self):
         return self.title
 
 
-class Tag(models.Model):
-    title = models.CharField(max_length=255)
+class Tag(BaseModel):
+    
+    def __str__(self):
+        return self.title
+        
 
-
-class Ad(models.Model):
+class Ad(BaseModel):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
