@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class BaseModel(models.Model):
-    title = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     class Meta:
         abstract=True
