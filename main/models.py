@@ -37,6 +37,7 @@ class Ad(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag)
+    price = models.PositiveIntegerField(default=0)
 
 
     def __str__(self):
