@@ -13,8 +13,15 @@ class Seller(models.Model):
 
 """Класс категории. Возвращает название категории и слаг"""
 class Category(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, allow_unicode=True)
+    title = models.CharField(
+        max_length=255,
+        help_text="Название категории"    
+    )
+    slug = models.SlugField(
+        max_length=255, 
+        allow_unicode=True,
+        help_text="slug формируется автоматически"
+        )
 
     class Meta:
         verbose_name_plural = "Categories" 
