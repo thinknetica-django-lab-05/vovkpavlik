@@ -50,5 +50,7 @@ class NewManager(models.Manager):
 
 class ArchiveAds(Ad):
 
+    objects = NewManager()
+
     class Meta:
         proxy = True
