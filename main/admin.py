@@ -37,7 +37,8 @@ class AdAdmin(admin.ModelAdmin):
         "name",
         "price",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "is_archive"
     ]
 
 
