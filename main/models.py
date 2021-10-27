@@ -42,6 +42,7 @@ class Ad(BaseModel):
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag)
     price = models.PositiveIntegerField(default=0)
+    is_archive = models.BooleanField(null=True)
 
 
 class ArchiveManager(models.Manager):
