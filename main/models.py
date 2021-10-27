@@ -3,11 +3,14 @@ from django.contrib.auth.models import User
 
 
 class BaseModel(models.Model):
-    name = models.CharField(max_length=100, default="Ad name")
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         abstract=True
-
+    
 
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -26,14 +29,9 @@ class Category(BaseModel):
     class Meta:
         verbose_name_plural = "Categories" 
 
-    def __str__(self):
-        return self.title
-
 
 class Tag(BaseModel):
-    
-    def __str__(self):
-        return self.title
+    pass
 
 
 class Ad(BaseModel):
@@ -44,8 +42,3 @@ class Ad(BaseModel):
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag)
     price = models.PositiveIntegerField(default=0)
-
-
-    def __str__(self):
-        return self.title
-
