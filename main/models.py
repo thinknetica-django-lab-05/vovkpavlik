@@ -56,7 +56,6 @@ class ArchiveAds(Ad):
     archived_objects = ArchiveManager()
 
     class Meta:
-        ordering = ["is_archive"]
         proxy = True
 
 
