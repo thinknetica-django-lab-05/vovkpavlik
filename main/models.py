@@ -45,7 +45,9 @@ class Ad(BaseModel):
 
 
 class ArchiveManager(models.Manager):
-    pass
+    
+    def get_queryset(self):
+        return super().get_queryset()
 
 
 class ArchiveAds(Ad):
@@ -54,3 +56,6 @@ class ArchiveAds(Ad):
 
     class Meta:
         proxy = True
+
+
+
