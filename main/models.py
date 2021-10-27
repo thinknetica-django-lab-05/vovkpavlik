@@ -44,6 +44,10 @@ class Ad(BaseModel):
     price = models.PositiveIntegerField(default=0)
 
 
+class NewManager(models.Manager):
+    pass
+
+
 class ArchiveAds(Ad):
 
     class Meta:
