@@ -42,3 +42,9 @@ class Ad(BaseModel):
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag)
     price = models.PositiveIntegerField(default=0)
+
+
+class ArchiveAds(Ad):
+
+    class Meta:
+        proxy = True
