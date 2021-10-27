@@ -47,13 +47,13 @@ class Ad(BaseModel):
 
 class ArchiveManager(models.Manager):
     
-    def get_archive_ads(self):
+    def get_queryset(self):
         return super().get_queryset().filter(is_archive=True)
 
 
 class ArchiveAds(Ad):
 
-    archived_objects = ArchiveManager()
+    objects = ArchiveManager()
 
     class Meta:
         proxy = True

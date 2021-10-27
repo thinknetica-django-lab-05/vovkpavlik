@@ -41,17 +41,5 @@ class AdAdmin(admin.ModelAdmin):
         "is_archive"
     ]
 
-
-# @admin.register(ArchiveAds)
-# class ArchiveAdsAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "seller",
-#         "category",
-#         "name",
-#         "price",
-#         "objects"
-#     ]
-
-
 admin.site.register(Tag)
 admin.site.register(ArchiveAds)
