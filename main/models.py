@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-"""Класс продавца. Вовзращает количество опубликованных объявлений"""
 class Seller(models.Model):
+    """Класс продавца. Вовзращает количество опубликованных объявлений"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     @property
@@ -11,8 +11,8 @@ class Seller(models.Model):
         return 2
 
 
-"""Класс категории. Возвращает название категории и слаг"""
 class Category(models.Model):
+    """Класс категории. Возвращает название категории и слаг"""
     title = models.CharField(
         max_length=255,
         help_text="Название категории"    
@@ -27,15 +27,15 @@ class Category(models.Model):
         verbose_name_plural = "Categories" 
 
 
-"""Класс тэга. Возвращает название тэга"""
 class Tag(models.Model):
+    """Класс тэга. Возвращает название тэга"""
     title = models.CharField(max_length=255)
 
 
-"""Класс объявления. Возвращает название объявления, описание,
+class Ad(models.Model):
+    """Класс объявления. Возвращает название объявления, описание,
 категорию и продавца, к которому относится объявление, и тэги
 к этому объявлению + дата создания и изменения объявления"""
-class Ad(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
