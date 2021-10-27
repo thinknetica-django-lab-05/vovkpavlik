@@ -53,9 +53,10 @@ class ArchiveManager(models.Manager):
 
 class ArchiveAds(Ad):
 
-    objects = ArchiveManager()
+    archived_objects = ArchiveManager()
 
     class Meta:
+        ordering = ["is_archive"]
         proxy = True
 
 
