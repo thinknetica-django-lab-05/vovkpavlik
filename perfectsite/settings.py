@@ -59,6 +59,9 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+CONSTANCE_BACKEND = 'constance.backends.memory.MemoryBackend'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
