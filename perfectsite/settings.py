@@ -59,7 +59,12 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+
 CONSTANCE_BACKEND = 'constance.backends.memory.MemoryBackend'
+
+CONSTANCE_CONFIG = {
+    'MAINTENANCE_MODE': bool,
+}
 
 
 MIDDLEWARE = [
