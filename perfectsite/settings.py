@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'ckeditor',
     'ckeditor_uploader',
-    'django-constance',
     'main',
+    'constance',
 ]
 
 SITE_ID = 1
@@ -63,9 +63,8 @@ CKEDITOR_CONFIGS = {
 CONSTANCE_BACKEND = 'constance.backends.memory.MemoryBackend'
 
 CONSTANCE_CONFIG = {
-    'MAINTENANCE_MODE': bool,
+    'MAINTENANCE_MODE': (False, 'На сайте ведуться технические работы')
 }
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
