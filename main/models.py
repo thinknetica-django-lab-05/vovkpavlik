@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 
 class BaseModel(models.Model):
@@ -25,6 +26,10 @@ class Seller(models.Model):
 
 class Category(BaseModel):
     slug = models.SlugField(max_length=255, allow_unicode=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Categories" 
