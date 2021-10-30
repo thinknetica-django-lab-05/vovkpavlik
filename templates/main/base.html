@@ -16,14 +16,19 @@
 </head>
 
 <body>
-  {% include 'main/includes/header.html' %}
+
+  {% block header %}
+    {% include 'main/includes/header.html' %}
+  {% endblock %}
 
   {% block content %}
     {{ flatpage.content }}
 
   {% endblock %}
 
-  {% include 'main/includes/footer.html' %}
+  {% block footer %}
+    {% include 'main/includes/footer.html' %}
+  {% endblock %}
 
 </body>
 
