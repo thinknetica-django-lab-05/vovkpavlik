@@ -1,7 +1,5 @@
 {% extends 'main/base.html' %}
 
-{% load notification_tags %}
-
 {% block content %}
 
   {% load flatpages %}
@@ -19,7 +17,7 @@
     <h1>  
       Здесь будет главная
     </h1>
-    {% get_count %}
+
     <ul>
       {% for page in flatpages %}
         <li><a href="{{ page.url }}">{{ page.title }}</a></li>
