@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from pytils import translit
 from django.template.defaultfilters import slugify
+
 
 
 class BaseModel(models.Model):
@@ -26,9 +28,11 @@ class Seller(models.Model):
 
 class Category(BaseModel):
     slug = models.SlugField(max_length=255, allow_unicode=True)
-
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        category_name = self.name
+        # self.slug = slugify(self.name)
+        self.slug = translit.slugify(u'' + category_name)
+
         super(Category, self).save(*args, **kwargs)
 
     class Meta:

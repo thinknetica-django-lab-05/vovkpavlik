@@ -41,5 +41,6 @@ class AdAdmin(admin.ModelAdmin):
         "is_archive"
     ]
 
+
 admin.site.register(Tag)
 admin.site.register(ArchiveAds)
