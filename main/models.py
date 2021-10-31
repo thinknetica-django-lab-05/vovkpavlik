@@ -4,7 +4,6 @@ from pytils import translit
 from django.template.defaultfilters import slugify
 
 
-
 class BaseModel(models.Model):
     name = models.CharField(max_length=100)
 
