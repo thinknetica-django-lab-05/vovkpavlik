@@ -26,6 +26,11 @@ class Category(models.Model):
         allow_unicode=True,
         help_text="slug формируется автоматически"
         ) 
+
+
+    class Meta:
+        verbose_name_plural = "Categories" 
+
     
     def __str__(self):
         return self.title
