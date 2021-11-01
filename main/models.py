@@ -2,13 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Seller(models.Model):
     """Класс продавца. Вовзращает количество опубликованных объявлений"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     @property
     def get_count_adds(self):
-        return 2
+        filtered_seller = Ad.objects.filter(seller=self)
+        adds_num = filtered_seller.count()
+        
+        return adds_num
 
 
 class Category(models.Model):
@@ -25,6 +29,9 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories" 
+    
+    def __str__(self):
+        return self.title
 
 
 class Tag(models.Model):
@@ -42,8 +49,9 @@ class Ad(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    link = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag)
 
 
     def __str__(self):
         return self.title
+
