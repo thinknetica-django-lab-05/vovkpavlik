@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'main',
+    'constance',
 ]
 
 SITE_ID = 1
@@ -56,6 +57,13 @@ CKEDITOR_CONFIGS = {
         'height': 300,
         'width': 300,
     },
+}
+
+
+CONSTANCE_BACKEND = 'constance.backends.memory.MemoryBackend'
+
+CONSTANCE_CONFIG = {
+    'MAINTENANCE_MODE': (False, 'На сайте ведуться технические работы')
 }
 
 MIDDLEWARE = [

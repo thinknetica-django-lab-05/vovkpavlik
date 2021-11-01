@@ -5,13 +5,24 @@
   {% load flatpages %}
   {% get_flatpages as flatpages %}
 
-  <h1>
-    Здесь будет главная
-  </h1>
-  <ul>
-    {% for page in flatpages %}
-      <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-    {% endfor %}
-  </ul>
+  {% if turn_on_block == True %}
+    <div class="eng_works">
+      <p>  
+        На сайте проводятся технические работы
+      </p>
+    </div>
+  
+  {% else %}
+    <h1>  
+      Здесь будет главная
+    </h1>
+
+    <ul>
+      {% for page in flatpages %}
+        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+      {% endfor %}
+    </ul>
+
+  {% endif %}
 
 {% endblock %}
