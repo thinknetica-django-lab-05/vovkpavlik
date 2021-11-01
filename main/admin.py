@@ -4,7 +4,7 @@ from ckeditor.widgets import CKEditorWidget
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 
-from .models import Seller, Category, Tag, Ad
+from .models import Seller, Category, Tag, Ad, ArchiveAds
 
 
 class FlatPageAdminForm(forms.ModelForm):
@@ -25,7 +25,7 @@ class SellerAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {
-        "slug": ("title",)
+        "slug": ("name",)
     }
 
 
@@ -34,11 +34,12 @@ class AdAdmin(admin.ModelAdmin):
     list_display = [
         "seller",
         "category",
-        "title",
+        "name",
         "price",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "is_archive"
     ]
 
-
 admin.site.register(Tag)
+admin.site.register(ArchiveAds)

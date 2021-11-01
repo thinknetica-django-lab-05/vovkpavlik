@@ -2,6 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class BaseModel(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        abstract=True
+    
 
 class Seller(models.Model):
     """Класс продавца. Вовзращает количество опубликованных объявлений"""
@@ -15,49 +24,45 @@ class Seller(models.Model):
         return adds_num
 
 
-class Category(models.Model):
-    """Класс категории. Возвращает название категории и слаг"""
-    title = models.CharField(
-        max_length=255,
-        help_text="Название категории"    
-    )
-    slug = models.SlugField(
-        max_length=255, 
-        allow_unicode=True,
-        help_text="slug формируется автоматически"
-        ) 
 
+class Category(BaseModel):
+    slug = models.SlugField(max_length=255, allow_unicode=True)
 
     class Meta:
         verbose_name_plural = "Categories" 
 
-    
-    def __str__(self):
-        return self.title
-    
-    class Meta:
-        verbose_name_plural = "Categories" 
+
+class Tag(BaseModel):
+    pass
 
 
-class Tag(models.Model):
-    """Класс тэга. Возвращает название тэга"""
-    title = models.CharField(max_length=255)
-
-
-class Ad(models.Model):
+class Ad(BaseModel):
     """Класс объявления. Возвращает название объявления, цену товара, описание,
 категорию и продавца, к которому относится объявление, и тэги
 к этому объявлению + дата создания и изменения объявления"""
+
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag)
     price = models.PositiveIntegerField(default=0)
+    is_archive = models.BooleanField(null=True)
 
 
-    def __str__(self):
-        return self.title
+class ArchiveManager(models.Manager):
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(is_archive=True)
+
+
+class ArchiveAds(Ad):
+
+    objects = ArchiveManager()
+
+    class Meta:
+        proxy = True
+
+
 
