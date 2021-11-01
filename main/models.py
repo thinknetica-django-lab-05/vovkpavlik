@@ -13,6 +13,7 @@ class BaseModel(models.Model):
     
 
 class Seller(models.Model):
+    """Класс продавца. Вовзращает количество опубликованных объявлений"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     @property
@@ -21,6 +22,7 @@ class Seller(models.Model):
         adds_num = filtered_seller.count()
         
         return adds_num
+
 
 
 class Category(BaseModel):
@@ -35,6 +37,10 @@ class Tag(BaseModel):
 
 
 class Ad(BaseModel):
+    """Класс объявления. Возвращает название объявления, цену товара, описание,
+категорию и продавца, к которому относится объявление, и тэги
+к этому объявлению + дата создания и изменения объявления"""
+
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
