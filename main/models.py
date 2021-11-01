@@ -25,13 +25,18 @@ class Category(models.Model):
         max_length=255, 
         allow_unicode=True,
         help_text="slug формируется автоматически"
-        )
+        ) 
+
 
     class Meta:
         verbose_name_plural = "Categories" 
+
     
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name_plural = "Categories" 
 
 
 class Tag(models.Model):
@@ -40,7 +45,7 @@ class Tag(models.Model):
 
 
 class Ad(models.Model):
-    """Класс объявления. Возвращает название объявления, описание,
+    """Класс объявления. Возвращает название объявления, цену товара, описание,
 категорию и продавца, к которому относится объявление, и тэги
 к этому объявлению + дата создания и изменения объявления"""
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
@@ -50,6 +55,7 @@ class Ad(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag)
+    price = models.PositiveIntegerField(default=0)
 
 
     def __str__(self):

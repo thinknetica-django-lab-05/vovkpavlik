@@ -35,6 +35,7 @@ class AdAdmin(admin.ModelAdmin):
         "seller",
         "category",
         "title",
+        "price",
         "created_at",
         "updated_at"
     ]
