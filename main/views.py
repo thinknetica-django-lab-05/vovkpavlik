@@ -1,5 +1,8 @@
+from typing import ClassVar
 from django.shortcuts import render
 from constance import config
+from django.views.generic.list import ListView
+
 from main.models import Ad
 
 
@@ -14,9 +17,9 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-def ad_list(request):
-    context = {
-        "products": Ad.objects.all()
-    }
+class AdListView(ListView):
+    model = Ad
 
-    return render(request, 'main/ad_list.html', context)
+    def get_products(self, **kwargs):
+        context = super().get_products(**kwargs)
+        return context

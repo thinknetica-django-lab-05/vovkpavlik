@@ -1,9 +1,9 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    
-  {% for product in products %}
-    {{ product.name }}
+
+  {% for ad in object_list %}
+    <tr>{{ ad.name}}</tr>
   {% endfor %}
 
 {% endblock %}
