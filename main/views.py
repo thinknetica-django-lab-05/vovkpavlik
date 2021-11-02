@@ -23,3 +23,5 @@ class AdListView(ListView):
     def get_products(self, **kwargs):
         context = super().get_products(**kwargs)
         return context
+
+
