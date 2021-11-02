@@ -28,7 +28,7 @@ class AdListView(ListView):
 class AdDetailView(DetailView):
     model = Ad
     template_name = 'main/ad_detail.html'
-    slug_field = 'name'
+    slug_field = 'id'
 
     def get_ad_info(self, **kwargs):
         context = super().get_context_data(**kwargs)
