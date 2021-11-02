@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from constance import config
+from main.models import Ad
 
 
 def index(request):
@@ -14,6 +15,8 @@ def index(request):
 
 
 def ad_list(request):
-    context = {}
+    context = {
+        "products": Ad.objects.all()
+    }
 
     return render(request, 'main/ad_list.html', context)
