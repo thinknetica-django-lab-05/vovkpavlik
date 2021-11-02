@@ -2,8 +2,25 @@
 
 {% block content %}
 
-  {% for ad in object_list %}
+  <!-- {% for ad in object_list %}
     <tr>{{ ad.name}}</tr>
-  {% endfor %}
+  {% endfor %} -->
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+      </tr>
+    </thead>
+    {% for ad in object_list %}
+      <tbody>
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ ad.name }}</td>
+        </tr>
+      </tbody>
+    {% endfor %}
+  </table>
 
 {% endblock %}
