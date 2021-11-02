@@ -11,3 +11,9 @@ def index(request):
     }
     
     return render(request, 'main/index.html', context)
+
+
+def ad_list(request):
+    context = {}
+
+    return render(request, 'main/ad_list.html', context)
