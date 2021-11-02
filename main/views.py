@@ -1,7 +1,7 @@
-from typing import ClassVar
 from django.shortcuts import render
 from constance import config
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 from main.models import Ad
 
@@ -25,3 +25,11 @@ class AdListView(ListView):
         return context
 
 
+class AdDetailView(DetailView):
+    model = Ad
+    template_name = 'main/ad_detail.html'
+    slug_field = 'name'
+
+    def get_ad_info(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
