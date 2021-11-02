@@ -1,5 +1,6 @@
 {% load flatpages %}
 {% get_flatpages as flatpages %}
+{% load notification_tags %}
 
 <!-- HEADER -->
 <div class = "header">
@@ -25,6 +26,7 @@
 					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 					<button class="btn btn-outline-success" type="submit">Search</button>
 				</form>
+				<button type="button" class="btn btn-primary">Notifications {% get_count %}</button>
                 <a class="navbar-brand" href="#">{{username}}</a>
 			</div>
 		</div>
