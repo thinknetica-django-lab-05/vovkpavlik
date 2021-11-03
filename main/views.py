@@ -18,16 +18,8 @@ def index(request):
 class AdListView(ListView):
     model = Ad
 
-    def get_products(self, **kwargs):
-        context = super().get_products(**kwargs)
-        return context
-
 
 class AdDetailView(DetailView):
     model = Ad
     template_name = 'main/ad_detail.html'
     slug_field = 'id'
-
-    def get_ad_info(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
