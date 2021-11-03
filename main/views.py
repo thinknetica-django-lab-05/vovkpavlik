@@ -18,7 +18,19 @@ def index(request):
 class AdListView(ListView):
     model = Ad
 
-    extra_context = {"tags": Tag.objects.all()}
+    extra_context = {
+        "tags": Tag.objects.all(),
+        }
+
+    def get_queryset(self):
+        tag = self.request.GET.get("tag")
+        if tag:
+            queryset = Ad.objects.filter(tag__name = tag)
+        else:
+            queryset = super().get_queryset()
+        print(type(self.request.GET.get("tag")))
+        
+        return queryset
     
 
 class AdDetailView(DetailView):
