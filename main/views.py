@@ -12,15 +12,17 @@ def index(request):
         "turn_on_block": config.MAINTENANCE_MODE,
     }
     
-    return render(request, 'main/index.html', context)
+    return render(request, "main/index.html", context)
 
 
 class AdListView(ListView):
     model = Ad
 
+    extra_context = {"tags": Tag.objects.all()}
+    
 
 class AdDetailView(DetailView):
     model = Ad
-    template_name = 'main/ad_detail.html'
-    slug_field = 'id'
+    template_name = "main/ad_detail.html"
+    slug_field = "id"
 
