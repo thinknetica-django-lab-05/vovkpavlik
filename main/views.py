@@ -3,7 +3,7 @@ from constance import config
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
-from main.models import Ad
+from main.models import Ad, Tag
 
 
 def index(request):
@@ -15,6 +15,10 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
+class TagListView(ListView):
+    model: Tag
+
+
 class AdListView(ListView):
     model = Ad
 
@@ -23,3 +27,4 @@ class AdDetailView(DetailView):
     model = Ad
     template_name = 'main/ad_detail.html'
     slug_field = 'id'
+
