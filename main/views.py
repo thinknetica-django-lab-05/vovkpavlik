@@ -15,10 +15,6 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-class TagListView(ListView):
-    model: Tag
-
-
 class AdListView(ListView):
     model = Ad
 

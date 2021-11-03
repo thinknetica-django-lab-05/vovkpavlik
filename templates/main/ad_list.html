@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<table class="table">
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -11,10 +11,10 @@
       </tr>
     </thead>
     {% for ad in object_list %}
-      <tbody>
+      <tbody> 
         <tr>
           <th scope="row">{{ ad.id }}</th>
-          <td><li><a href="{{ ad.id }}">{{ ad.name }}</a></li></td>
+          <td><li><a href="{{ ad.id }}">{{ ad.name}}</a></li></td>
         </tr>
       </tbody>
     {% endfor %}
