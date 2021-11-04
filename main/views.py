@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from constance import config
 from django.views.generic.list import ListView
