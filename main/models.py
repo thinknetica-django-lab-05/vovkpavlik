@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from pytils import translit
 from django.template.defaultfilters import slugify
 
 
@@ -10,8 +11,8 @@ class BaseModel(models.Model):
         return self.name
 
     class Meta:
-        abstract=True
-    
+        abstract = True
+
 
 class Seller(models.Model):
     """Класс продавца. Вовзращает количество опубликованных объявлений"""
@@ -21,7 +22,7 @@ class Seller(models.Model):
     def get_count_adds(self):
         filtered_seller = Ad.objects.filter(seller=self)
         adds_num = filtered_seller.count()
-        
+
         return adds_num
 
 
@@ -30,15 +31,17 @@ class Category(BaseModel):
     slug = models.SlugField(max_length=255, allow_unicode=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        category_name = self.name
+        self.slug = translit.slugify(u'' + category_name)
+
         super(Category, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name_plural = "Categories" 
+        verbose_name_plural = "Categories"
 
 
 class Tag(BaseModel):
-    pass
+    ...
 
 
 class Ad(BaseModel):
@@ -57,17 +60,13 @@ class Ad(BaseModel):
 
 
 class ArchiveManager(models.Manager):
-    
+
     def get_queryset(self):
         return super().get_queryset().filter(is_archive=True)
 
 
 class ArchiveAds(Ad):
-
     objects = ArchiveManager()
 
     class Meta:
         proxy = True
-
-
-
