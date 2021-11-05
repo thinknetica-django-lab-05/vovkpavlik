@@ -1,39 +1,5 @@
-
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@vovkpavlik
-It appears your account may be based in a U.S.-sanctioned region. As a result, due to U.S. trade controls law restrictions, we are unable to provide private repository services and paid services for your account. GitHub has preserved, however, your access to certain free services for public repositories. If your account has been flagged in error, and you are not located in or resident in a sanctioned region, please file an appeal. Please read about GitHub and Trade Controls for more information.
-vovkpavlik /
-yandex-poster
-Public
-
-1
-0
-
-    0
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-
-    Settings
-
-yandex-poster/.gitignore
-@vovkpavlik
-vovkpavlik Добавил обработку медиа файлов.
-Latest commit 8b7d55e on Jul 1
-History
-1 contributor
-141 lines (114 sloc) 2 KB
 # Byte-compiled / optimized / DLL files
+.idea/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -173,6 +139,7 @@ dmypy.json
 cython_debug/
 
 .vscode
+
 test.py
 
 /static/
