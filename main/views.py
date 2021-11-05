@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from constance import config
+from django.utils.regex_helper import get_quantifier
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
@@ -18,11 +19,7 @@ def index(request):
 
 class AdListView(ListView):
     model = Ad
-    paginate_by = 1
-
-    extra_context = {
-        "tags": Tag.objects.all(),
-        }
+    paginate_by = 5
 
     def get_queryset(self):
         tag = self.request.GET.get("tag")
@@ -33,6 +30,10 @@ class AdListView(ListView):
         
         return queryset
     
+    extra_context = {
+        "tags": Tag.objects.all(),
+        "tag_name": ...
+    }
 
 class AdDetailView(DetailView):
     model = Ad
