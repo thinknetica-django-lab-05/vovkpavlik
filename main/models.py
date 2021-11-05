@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from pytils import translit
 from django.template.defaultfilters import slugify
 
-
 class BaseModel(models.Model):
     name = models.CharField(max_length=100)
 
