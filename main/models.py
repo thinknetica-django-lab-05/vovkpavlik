@@ -16,6 +16,7 @@ class BaseModel(models.Model):
 
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    itn = models.CharField("ИНН", max_length=100, default = "000000000")
 
     @property
     def get_count_adds(self):

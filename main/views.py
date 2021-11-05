@@ -4,8 +4,9 @@ from constance import config
 from django.utils.regex_helper import get_quantifier
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic import UpdateView
 
-from main.models import Ad, Tag
+from main.models import Ad, Tag, Seller
 
 
 def index(request):
@@ -40,3 +41,6 @@ class AdDetailView(DetailView):
     template_name = "main/ad_detail.html"
     slug_field = "id"
 
+
+class SellerUpdateView(UpdateView):
+    ...
