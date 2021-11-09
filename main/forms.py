@@ -11,6 +11,7 @@ class UserForm(ModelForm):
         fields = ["first_name", "last_name", "email"]
 
 
+# Здесь я к модели добавляю форму
 class SellerForm(ModelForm):
 
     class Meta:

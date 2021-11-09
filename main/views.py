@@ -6,6 +6,7 @@ from django.views.generic import UpdateView
 from django.template.response import TemplateResponse
 from constance import config
 from django.contrib.auth.models import User
+from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
 from main.forms import UserForm, SellerForm
@@ -45,58 +46,34 @@ class AdDetailView(DetailView):
 
 
 class SellerUpdateView(UpdateView):
-    template_name = "main/seller_update.html"
-
-    def get_object(self):
-        return Seller.objects.all()
-
-    def get_context_data(self, request):
-        context = {
-            "user_form": UserForm(),
-            "seller_form": SellerForm(),
-        }
-
-        return TemplateResponse(request, "main/seller_update.html", context)
-
-
-# class SellerUpdateView(UpdateView):
-#     template_name = "main/seller_update.html"
-#     fields = '__all__'
-
-#     def get_object(self):
-#         if self.request.method == "POST":
-#             user_form = UserForm(self.request.POST)
-#             seller_form = SellerForm(self.request.POST)
-#             if user_form.is_valid() and seller_form.is_valid():
-#                 user_form.save()
-#                 seller_form.save()
-#                 return HttpResponseRedirect("seller-info")
-#         else:
-#             context = {
-#                 "user_form": UserForm,
-#                 "seller_form": SellerForm()
-#             }
-        
-#         return TemplateResponse(self.request, "main/seller_update.html", context)
-
-
-class SellerUpdateView(UpdateView):
+    # UpdateView работает с формами, и в модели Seller форма уже есть.
     model = Seller
     template_name = "main/seller_update.html"
     fields = "__all__"
+    success_url = reverse_lazy("seller-info")   # При удачной валидации - переходим на главную страницу
 
+# Чтобы загрузить форму на страницу, нужно использовать пк или слаг.
+# Или сразу получить конкретный объект, в данном случае - юзера.
     def get_object(self):
         seller = Seller.objects.get(user=self.request.user)
         return seller
 
+
+# Так как UpdateView по дефолту работает только с одной моделью,
+# То небходимо вручную добавить еще одну модель и форму к ней.
     def get_context_data(self):
+        # Здесь я вызываю метод, который дает словарь
         context = super().get_context_data()
-        context["user_form"] = UserForm(instance=self.request.user)
+        
+        # И в словарь я добавляю ключ со значением - форма.
+        # Так как использовать другую модель я не могу, я получаю данные по связанной модели.
+        context["user_form"] = UserForm(instance=self.request.user) # из инстанса берем данные
         return context
 
+    def form_valid(self, form):
+        self.object = form.save()
+        user_form = UserForm(self.request.POST, instance=self.request.user)
+        if user_form.is_valid():
+            user_form.save()
+        return super().form_valid(form)
 
-
-
-
-
-        
