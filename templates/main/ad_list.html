@@ -3,21 +3,61 @@
 
 {% block content %}
 
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-      </tr>
-    </thead>
-    {% for ad in object_list %}
-      <tbody>
-        <tr>
-          <th scope="row">{{ ad.id }}</th>
-          <td><li><a href="{{ ad.id }}">{{ ad.name }}</a></li></td>
-        </tr>
-      </tbody>
-    {% endfor %}
-  </table>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+            </tr>
+          </thead>
+          {% for ad in object_list %}
+            <tbody> 
+              <tr>
+                <th scope="row">{{ ad.id }}</th>
+                <td><li><a href="{{ ad.id }}">{{ ad.name}}</a></li></td>
+              </tr>
+            </tbody>
+          {% endfor %}
+        </table>
+      </div>
+      <div class="col-6">
+        <ul>
+          {% for tag in tags %}
+            <li><a href="{% url 'ad-list' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>
+          {% endfor %}
+      </ul>
+      </div>
+    <div class="row">
+    </div>
+  </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}  
+
+      {% for page in page_obj.paginator.page_range %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page }}">{{ page }}</a>
+          </li>      
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>     
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
 
 {% endblock %}

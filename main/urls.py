@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('ads/', AdListView.as_view(), name='ad-list'),
     path('ads/<slug:slug>/', AdDetailView.as_view(), name='ad-detail'),
+    
 ]
