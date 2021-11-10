@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView
 from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -15,7 +15,6 @@ def index(request):
         "title": "Главная страница",
         "turn_on_block": config.MAINTENANCE_MODE,
     }
-    
     return render(request, "main/index.html", context)
 
 
@@ -66,3 +65,9 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         if user_form.is_valid():
             user_form.save()
         return super().form_valid(form)
+
+
+class AdCreateView(CreateView):
+    model = Ad
+    template_name = "main/create_ad.html"
+    fields = "__all__"
