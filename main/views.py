@@ -70,4 +70,5 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 class AdCreateView(CreateView):
     model = Ad
     template_name = "main/create_ad.html"
+    success_url = reverse_lazy("index")
     fields = "__all__"
