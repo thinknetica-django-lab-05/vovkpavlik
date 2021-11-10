@@ -72,3 +72,11 @@ class AdCreateView(CreateView):
     template_name = "main/create_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
+
+
+class AdUpdateView(UpdateView):
+    model = Ad
+    template_name = "main/update_ad.html"
+    success_url = reverse_lazy("index")
+    slug_field = "id"
+    fields = "__all__"
