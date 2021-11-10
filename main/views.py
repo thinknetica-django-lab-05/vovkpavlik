@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import UpdateView
 from django.template.response import TemplateResponse
 from constance import config
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 
@@ -45,12 +46,14 @@ class AdDetailView(DetailView):
     slug_field = "id"
 
 
-class SellerUpdateView(UpdateView):
+class SellerUpdateView(LoginRequiredMixin, UpdateView):
     # UpdateView работает с формами, и в модели Seller форма уже есть.
     model = Seller
     template_name = "main/seller_update.html"
     fields = "__all__"
     success_url = reverse_lazy("seller-info")   # При удачной валидации - переходим на главную страницу
+    login_url = reverse_lazy("index")
+    redirect_field_name = ("index")
 
 # Чтобы загрузить форму на страницу, нужно использовать пк или слаг.
 # Или сразу получить конкретный объект, в данном случае - юзера.
