@@ -1,16 +1,13 @@
-from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic import UpdateView
-from django.template.response import TemplateResponse
 from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
-from main.forms import UserForm, SellerForm
+from main.forms import UserForm
 
 
 def index(request):
@@ -47,30 +44,20 @@ class AdDetailView(DetailView):
 
 
 class SellerUpdateView(LoginRequiredMixin, UpdateView):
-    # UpdateView работает с формами, и в модели Seller форма уже есть.
     model = Seller
     template_name = "main/seller_update.html"
     fields = "__all__"
-    success_url = reverse_lazy("seller-info")   # При удачной валидации - переходим на главную страницу
+    success_url = reverse_lazy("seller-info")
     login_url = reverse_lazy("index")
     redirect_field_name = ("index")
 
-# Чтобы загрузить форму на страницу, нужно использовать пк или слаг.
-# Или сразу получить конкретный объект, в данном случае - юзера.
     def get_object(self):
         seller = Seller.objects.get(user=self.request.user)
         return seller
 
-
-# Так как UpdateView по дефолту работает только с одной моделью,
-# То небходимо вручную добавить еще одну модель и форму к ней.
     def get_context_data(self):
-        # Здесь я вызываю метод, который дает словарь
         context = super().get_context_data()
-        
-        # И в словарь я добавляю ключ со значением - форма.
-        # Так как использовать другую модель я не могу, я получаю данные по связанной модели.
-        context["user_form"] = UserForm(instance=self.request.user) # из инстанса берем данные
+        context["user_form"] = UserForm(instance=self.request.user)
         return context
 
     def form_valid(self, form):
@@ -79,4 +66,3 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         if user_form.is_valid():
             user_form.save()
         return super().form_valid(form)
-
