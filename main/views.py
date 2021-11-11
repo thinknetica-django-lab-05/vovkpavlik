@@ -49,7 +49,6 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("seller-info")
     login_url = reverse_lazy("index")
-    redirect_field_name = ("index")
 
     def get_object(self):
         seller = Seller.objects.get(user=self.request.user)
