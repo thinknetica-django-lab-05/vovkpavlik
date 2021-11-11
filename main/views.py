@@ -79,3 +79,4 @@ class AdUpdateView(UpdateView):
     template_name = "main/update_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
+    
