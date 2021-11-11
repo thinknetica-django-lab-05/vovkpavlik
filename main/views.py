@@ -48,7 +48,6 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("seller-info")
     login_url = reverse_lazy("index")
-    redirect_field_name = ("index")
 
     def get_object(self):
         seller = Seller.objects.get(user=self.request.user)
@@ -67,16 +66,18 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class AdCreateView(CreateView):
+class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
+    login_url = reverse_lazy("index")
 
 
-class AdUpdateView(UpdateView):
+class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
+    login_url = reverse_lazy("index")
     
