@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic import UpdateView, CreateView
+from django.views.generic import UpdateView, CreateView, TemplateView
 from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -10,12 +10,14 @@ from main.models import Ad, Tag, Seller
 from main.forms import UserForm
 
 
-def index(request):
-    context = {
-        "title": "Главная страница",
-        "turn_on_block": config.MAINTENANCE_MODE,
-    }
-    return render(request, "main/index.html", context)
+class IndexTemplateView(TemplateView):
+    template_name = "main/index.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["title"] = "Главная страница"
+        context["turn_on_block"] = config.MAINTENANCE_MODE
+        return context
 
 
 class AdListView(ListView):
