@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from pytils import translit
 from django.template.defaultfilters import slugify
 
-
 class BaseModel(models.Model):
     name = models.CharField(max_length=100)
 
@@ -17,6 +16,7 @@ class BaseModel(models.Model):
 class Seller(models.Model):
     """Класс продавца. Вовзращает количество опубликованных объявлений"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    itn = models.CharField("ИНН", max_length=100, default = "000000000")
 
     @property
     def get_count_adds(self):

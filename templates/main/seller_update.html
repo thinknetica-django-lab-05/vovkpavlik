@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+  <form action="{% url 'seller-info' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ user_form.as_p }}
+    <button type="submit">Update</button>
+  </form>
+
+
+{% endblock %}

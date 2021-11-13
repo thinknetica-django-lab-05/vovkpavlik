@@ -1,11 +1,13 @@
-from django.core.paginator import Paginator
 from django.shortcuts import render
-from constance import config
-from django.utils.regex_helper import get_quantifier
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic import UpdateView
+from constance import config
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
-from main.models import Ad, Tag
+from main.models import Ad, Tag, Seller
+from main.forms import UserForm
 
 
 def index(request):
@@ -32,11 +34,34 @@ class AdListView(ListView):
     
     extra_context = {
         "tags": Tag.objects.all(),
-        "tag_name": ...
     }
+
 
 class AdDetailView(DetailView):
     model = Ad
     template_name = "main/ad_detail.html"
     slug_field = "id"
 
+
+class SellerUpdateView(LoginRequiredMixin, UpdateView):
+    model = Seller
+    template_name = "main/seller_update.html"
+    fields = "__all__"
+    success_url = reverse_lazy("seller-info")
+    login_url = reverse_lazy("index")
+
+    def get_object(self):
+        seller = Seller.objects.get(user=self.request.user)
+        return seller
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["user_form"] = UserForm(instance=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save()
+        user_form = UserForm(self.request.POST, instance=self.request.user)
+        if user_form.is_valid():
+            user_form.save()
+        return super().form_valid(form)
