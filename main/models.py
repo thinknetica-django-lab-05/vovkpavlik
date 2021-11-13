@@ -14,6 +14,7 @@ class BaseModel(models.Model):
 
 
 class Seller(models.Model):
+    """Класс продавца. Вовзращает количество опубликованных объявлений"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     itn = models.CharField("ИНН", max_length=100, default = "000000000")
 
@@ -23,6 +24,7 @@ class Seller(models.Model):
         adds_num = filtered_seller.count()
 
         return adds_num
+
 
 
 class Category(BaseModel):
@@ -46,6 +48,7 @@ class Ad(BaseModel):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, verbose_name="Продавец")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
     description = models.TextField("Описание")
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag, verbose_name="Тэги")
