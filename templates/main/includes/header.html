@@ -2,6 +2,7 @@
 {% get_flatpages as flatpages %}
 {% load custom_tags %}
 {% load custom_filters %}
+{% load thumbnail %}
 
 
 <!-- HEADER -->
@@ -33,6 +34,9 @@
 				</form>
 				<button type="button" class="btn btn-primary">Notifications {% get_count %}</button>
                 <a class="navbar-brand" href="#">{{user.username}}</a>
+                {% thumbnail user.seller.avatar "50x50" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				{% endthumbnail %}
 			</div>
 		</div>
 	</nav>

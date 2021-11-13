@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'main',
     'constance',
+    'sorl.thumbnail',
 ]
 
 SITE_ID = 1
