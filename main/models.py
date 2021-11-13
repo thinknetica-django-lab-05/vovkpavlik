@@ -4,7 +4,7 @@ from pytils import translit
 from django.template.defaultfilters import slugify
 
 class BaseModel(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField("Название", max_length=100)
 
     def __str__(self):
         return self.name
@@ -45,18 +45,15 @@ class Tag(BaseModel):
 
 
 class Ad(BaseModel):
-    """Класс объявления. Возвращает название объявления, цену товара, описание,
-категорию и продавца, к которому относится объявление, и тэги
-к этому объявлению + дата создания и изменения объявления"""
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, verbose_name="Продавец")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
+    description = models.TextField("Описание")
 
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    tag = models.ManyToManyField(Tag)
-    price = models.PositiveIntegerField(default=0)
-    is_archive = models.BooleanField(null=True)
+    tag = models.ManyToManyField(Tag, verbose_name="Тэги")
+    price = models.PositiveIntegerField("Цена", default=0)
+    is_archive = models.BooleanField("Продано", null=True)
 
 
 class ArchiveManager(models.Manager):
