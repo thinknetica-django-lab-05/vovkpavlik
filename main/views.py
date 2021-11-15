@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
-from main.forms import UserForm
+from main.forms import UserForm, ImageFormset
 
 
 class IndexTemplateView(TemplateView):
@@ -27,7 +27,7 @@ class AdListView(ListView):
     def get_queryset(self):
         tag = self.request.GET.get("tag")
         if tag:
-            queryset = Ad.objects.filter(tag__name = tag)
+            queryset = Ad.objects.filter(tag__name=tag)
         else:
             queryset = super().get_queryset()
         
@@ -82,4 +82,8 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("index")
     fields = "__all__"
     login_url = reverse_lazy("index")
-    
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["picture_form"] = ImageFormset()
+        return context
