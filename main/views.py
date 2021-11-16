@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
-from main.forms import UserForm, ImageFormset
+from main.forms import UserForm, AdForm, ImageFormset
 
 
 class IndexTemplateView(TemplateView):
@@ -83,7 +83,14 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     fields = "__all__"
     login_url = reverse_lazy("index")
 
-    def get_context_data(self):
-        context = super().get_context_data()
-        context["picture_form"] = ImageFormset()
-        return context
+    # def get_context_data(self):
+    #     context = super().get_context_data()
+    #     context["picture_form"] = ImageFormset()
+    #     return context
+
+    # def form_valid(self, form):
+    #     self.object = form.save()
+    #     picture_form = AdForm(self.request.POST)
+    #     if picture_form.is_valid():
+    #         picture_form.save()
+    #     return super().form_valid(form)
