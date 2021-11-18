@@ -1,6 +1,5 @@
 from django.urls import path
 
-from main import views
 from main.views import IndexTemplateView
 from main.views import AdListView, AdDetailView, SellerUpdateView, AdCreateView, AdUpdateView
 

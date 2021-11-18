@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -57,7 +58,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context["user_form"] = UserForm(instance=self.request.user)
+        context["user_form"] = UserForm(instance=self.object.user)
         return context
 
     def form_valid(self, form):
@@ -75,6 +76,22 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     fields = "__all__"
     login_url = reverse_lazy("index")
 
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["picture_form"] = ImageFormset()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        formset = ImageFormset(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            if formset.is_valid():
+                formset.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return form.invalid()
+
 
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
@@ -83,14 +100,19 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     fields = "__all__"
     login_url = reverse_lazy("index")
 
-    # def get_context_data(self):
-    #     context = super().get_context_data()
-    #     context["picture_form"] = ImageFormset()
-    #     return context
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["picture_form"] = ImageFormset(instance=self.object)
+        return context
 
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     picture_form = AdForm(self.request.POST)
-    #     if picture_form.is_valid():
-    #         picture_form.save()
-    #     return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        self.object = self.get_object()
+        formset = ImageFormset(request.POST, request.FILES, instance=self.object)
+        if form.is_valid():
+            form.save()
+            if formset.is_valid():
+                formset.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return form.invalid()
