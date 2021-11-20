@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from pytils import translit
-from django.template.defaultfilters import slugify
 
 class BaseModel(models.Model):
     name = models.CharField("Название", max_length=100)
@@ -14,9 +13,9 @@ class BaseModel(models.Model):
 
 
 class Seller(models.Model):
-    """Класс продавца. Вовзращает количество опубликованных объявлений"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    itn = models.CharField("ИНН", max_length=100, default = "000000000")
+    itn = models.CharField("ИНН", max_length=100, default="000000000")
+    avatar = models.ImageField(upload_to="images/avatars/", default="images/avatars/default-avatar.jpg")
 
     @property
     def get_count_adds(self):
@@ -67,3 +66,8 @@ class ArchiveAds(Ad):
 
     class Meta:
         proxy = True
+
+
+class AdPicture(BaseModel):
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, verbose_name="Объявление")
+    image = models.ImageField(upload_to="images/ads/", default="images/ads/default-product.jpg")
