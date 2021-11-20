@@ -74,7 +74,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = "main/create_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
-    login_url = reverse_lazy("index")
+    login_url = reverse_lazy("admin:login")
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -83,9 +83,10 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        formset = ImageFormset(request.POST, request.FILES)
+
         if form.is_valid():
-            form.save()
+            self.object = form.save()  # Создается объект из основной формы
+            formset = ImageFormset(request.POST, request.FILES, instance=self.object)
             if formset.is_valid():
                 formset.save()
             return HttpResponseRedirect(self.get_success_url())
@@ -98,7 +99,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "main/update_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
-    login_url = reverse_lazy("index")
+    login_url = reverse_lazy("admin:login")
 
     def get_context_data(self):
         context = super().get_context_data()

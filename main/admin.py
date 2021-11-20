@@ -19,7 +19,7 @@ class FlatPageAdmin(admin.ModelAdmin):
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ["user", "get_count_adds"]
+    list_display = ["user", "get_count_adds",]
 
 
 @admin.register(Category)
@@ -32,16 +32,22 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Ad)
 class AdAdmin(admin.ModelAdmin):
     list_display = [
+        "id",
         "seller",
         "category",
         "name",
         "price",
         "created_at",
         "updated_at",
-        "is_archive"
+        "is_archive",
     ]
+
+
+@admin.register(AdPicture)
+class AdPicture(admin.ModelAdmin):
+    list_display = ["ad"]
 
 
 admin.site.register(Tag)
 admin.site.register(ArchiveAds)
-admin.site.register(AdPicture)
+
