@@ -50,7 +50,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "main/seller_update.html"
     fields = "__all__"
     success_url = reverse_lazy("seller-info")
-    login_url = reverse_lazy("index")
+    login_url = "/accounts/login/"
 
     def get_object(self):
         seller = Seller.objects.get(user=self.request.user)
