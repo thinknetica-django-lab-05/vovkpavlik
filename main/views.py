@@ -74,7 +74,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = "main/create_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
-    login_url = reverse_lazy("admin:login")
+    login_url = "/accounts/login/"
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -98,7 +98,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "main/update_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
-    login_url = reverse_lazy("admin:login")
+    login_url = "/accounts/login/"
 
     def get_context_data(self):
         context = super().get_context_data()
