@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'main',
     'oauth_app',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'constance',
     'sorl.thumbnail',
 ]
