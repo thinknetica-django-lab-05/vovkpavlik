@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'main',
+    'oauth_app',
     'constance',
     'sorl.thumbnail',
 ]
