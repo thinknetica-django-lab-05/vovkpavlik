@@ -53,8 +53,6 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
 ]
 
-# SITE_ID = 1
-
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_CONFIGS = {
@@ -179,11 +177,13 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
-        }
+        },
     }
 }
 
+
 SITE_ID = 2
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/accounts/seller/'
 LOGOUT_REDIRECT_URL = '/'
+
