@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'main',
-    'oauth_app',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
