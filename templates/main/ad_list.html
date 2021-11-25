@@ -4,11 +4,17 @@
 {% block content %}
 
   <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <a class="btn btn-success" href="/ads/add" role="button">Создать объявление</a>
-      </div>
-    </div>
+
+      {% for group in request.user.groups.all %}
+        {% if group.name != "banned users" %}
+          <div class="row">
+            <div class="col-6">
+              <a class="btn btn-success" href="/ads/add/" role="button">Создать объявление</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
     <div class="row">
       <div class="col">
         <table class="table">
