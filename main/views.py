@@ -51,8 +51,8 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("seller-info")
     login_url = "/accounts/login/"
 
-    def get_object(self):
-        seller = Seller.objects.get(user=self.request.user)
+    def get_object(self, queryset=None):
+        seller, created = Seller.objects.get_or_create(user=self.request.user)
         return seller
 
     def get_context_data(self, **kwargs):
