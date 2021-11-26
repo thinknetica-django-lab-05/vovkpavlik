@@ -88,3 +88,8 @@ class ArchiveAds(Ad):
 class AdPicture(BaseModel):
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, verbose_name="Объявление")
     image = models.ImageField(upload_to="images/ads/", default="images/ads/default-product.jpg")
+
+
+class Subscription(models.Model):
+    user = models.ManyToManyField(User)
+    
