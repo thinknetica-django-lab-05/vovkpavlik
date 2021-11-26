@@ -1,0 +1,10 @@
+<h3>
+{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Приветствую, {{ site_name }}!
+</h3>
+
+{{ user_display }}, подтвердите свою регистрацию на сайте {{ site_domain }}.
+
+Для завершения регистрации, перейдите по ссылке <a href="{{ activate_url }}">{{ activate_url }}</a>
+{% endblocktrans %}{% endautoescape %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Спасибо что выбрали{{ site_name }}!
+{{ site_domain }}{% endblocktrans %}
