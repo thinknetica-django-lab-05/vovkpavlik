@@ -1,14 +1,24 @@
+import re
+
 from django.core.exceptions import ValidationError
 
 
 def validate_itn(inn):
-    try:
-        int(inn)
-    except ValueError:
+    pattern = "\D"
+    symbols = re.search(pattern, inn)
+    if symbols:
         raise ValidationError(
             "inn must contains numbers",
             params={"inn": inn}
         )
+
+    # try:
+    #     int(inn)
+    # except ValueError:
+    #     raise ValidationError(
+    #         "inn must contains numbers",
+    #         params={"inn": inn}
+    #     )
 
     if len(inn) not in (10, 12):
         raise ValidationError(

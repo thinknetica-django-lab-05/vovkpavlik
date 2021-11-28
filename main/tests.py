@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 from django.contrib.auth.models import User
 from main.models import Category, Ad, Seller, Tag
 
@@ -87,3 +88,6 @@ filter_by_comp = Ad.objects.filter(category=comp)
 for seller in Seller.objects.all():
     filter_sellers = Ad.objects.filter(seller=seller)
     filter_sellers.count()
+
+
+
