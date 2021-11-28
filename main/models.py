@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 from pytils import translit
+
+from main.validator import validate_itn
 
 
 class BaseModel(models.Model):
@@ -15,7 +18,11 @@ class BaseModel(models.Model):
 
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    itn = models.CharField("ИНН", max_length=100, default="000000000")
+    itn = models.CharField(
+        "ИНН", max_length=100,
+        default="000000000",
+        validators=[validate_itn]
+    )
     avatar = models.ImageField(upload_to="images/avatars/", default="images/avatars/default-avatar.jpg")
 
     @property
@@ -27,7 +34,6 @@ class Seller(models.Model):
 
     def __str__(self):
         return self.user.username
-
 
 
 class Category(BaseModel):

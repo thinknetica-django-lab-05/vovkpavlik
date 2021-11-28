@@ -56,8 +56,8 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         seller = Seller.objects.get(user=self.request.user)
         return seller
 
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["user_form"] = UserForm(instance=self.object.user)
         return context
 
@@ -83,7 +83,6 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-
         if form.is_valid():
             self.object = form.save()  # Создается объект из основной формы
             formset = ImageFormset(request.POST, request.FILES, instance=self.object)
