@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from pytils import translit
 
+
 class BaseModel(models.Model):
     name = models.CharField("Название", max_length=100)
 
@@ -23,6 +24,9 @@ class Seller(models.Model):
         adds_num = filtered_seller.count()
 
         return adds_num
+
+    def __str__(self):
+        return self.user.username
 
 
 
@@ -47,7 +51,6 @@ class Ad(BaseModel):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, verbose_name="Продавец")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
     description = models.TextField("Описание")
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tag = models.ManyToManyField(Tag, verbose_name="Тэги")
