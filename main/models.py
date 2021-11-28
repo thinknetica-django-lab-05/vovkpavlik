@@ -96,18 +96,18 @@ class Subscription(models.Model):
     user = models.ManyToManyField(User)
 
 
-@receiver(post_save, sender=Ad)
-def send_new_ad_notification_email(sender, instance, created, **kwargs):
-    emails = [user.email for user in User.objects.all()]
-    if created:
-        name = instance.name
-        subject = "Новое объявление"
-        message = f"Кто-то продает {name}. Спеши посмотреть!"
-
-        send_mail(
-            subject,
-            message,
-            emails,
-            fail_silently=False,
-        )
+# @receiver(post_save, sender=Ad)
+# def send_new_ad_notification_email(sender, instance, created, **kwargs):
+#     emails = [user.email for user in User.objects.all()]
+#     if created:
+#         name = instance.name
+#         subject = "Новое объявление"
+#         message = f"Кто-то продает {name}. Спеши посмотреть!"
+#
+#         send_mail(
+#             subject,
+#             message,
+#             emails,
+#             fail_silently=False,
+#         )
 

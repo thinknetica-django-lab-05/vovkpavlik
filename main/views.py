@@ -104,7 +104,6 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
     fields = "__all__"
-    # success_url = reverse_lazy("index")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
@@ -113,14 +112,14 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         form = self.get_form()
-        self.object = self.get_object()  # Это 100% изначальный объект.
         print(self.object.id)
         formset = ImageFormset(request.POST, request.FILES, instance=self.object)
         if form.is_valid():
-            form.save()  # Это уже создается новый объект
+            form.save()
             if formset.is_valid():
-                form.save()
+                formset.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return form.invalid()
