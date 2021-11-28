@@ -4,4 +4,7 @@ django-constance==2.8.0
 pytils==0.3
 Pillow==8.4.0
 sorl-thumbnail==12.7.0
+django-allauth
+
+
 
