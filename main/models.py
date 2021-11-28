@@ -107,7 +107,6 @@ def send_new_ad_notification_email(sender, instance, created, **kwargs):
         send_mail(
             subject,
             message,
-            "badwolfproduction.com",
             emails,
             fail_silently=False,
         )

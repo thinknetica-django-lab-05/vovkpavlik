@@ -2,12 +2,13 @@ from django.core.exceptions import ValidationError
 
 
 def validate_itn(inn):
-    for char in inn:
-        if char.isalpha():
-            raise ValidationError(
-                "inn must contains numbers",
-                params={"inn": inn}
-            )
+    try:
+        int(inn)
+    except ValueError:
+        raise ValidationError(
+            "inn must contains numbers",
+            params={"inn": inn}
+        )
 
     if len(inn) not in (10, 12):
         raise ValidationError(
