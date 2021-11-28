@@ -50,7 +50,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "main/seller_update.html"
     fields = "__all__"
     success_url = reverse_lazy("seller-info")
-    login_url = reverse_lazy("index")
+    login_url = "/accounts/login/"
 
     def get_object(self):
         seller = Seller.objects.get(user=self.request.user)
@@ -74,7 +74,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     template_name = "main/create_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
-    login_url = reverse_lazy("admin:login")
+    login_url = "/accounts/login/"
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -98,7 +98,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "main/update_ad.html"
     success_url = reverse_lazy("index")
     fields = "__all__"
-    login_url = reverse_lazy("admin:login")
+    login_url = "/accounts/login/"
 
     def get_context_data(self):
         context = super().get_context_data()
