@@ -71,7 +71,6 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"
-    success_url = reverse_lazy("index")
     fields = "__all__"
     login_url = "/accounts/login/"
 
@@ -91,12 +90,15 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         else:
             return form.invalid()
 
+    def get_success_url(self):
+        return reverse_lazy("ad-detail", args=(self.object.id,))
+
 
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
-    success_url = reverse_lazy("index")
     fields = "__all__"
+    success_url = reverse_lazy("index")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
@@ -115,3 +117,6 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return form.invalid()
+
+    # def get_success_url(self):
+    #     return reverse_lazy("ad-detail", args=(self.object.id,))
