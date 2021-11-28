@@ -25,6 +25,12 @@ class AdListView(ListView):
     model = Ad
     paginate_by = 5
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user = self.request.user
+        context["banned_user"] = user.groups.filter(name="banned users")
+        return context
+
     def get_queryset(self):
         tag = self.request.GET.get("tag")
         if tag:
