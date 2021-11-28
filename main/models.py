@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
-from django.db.models.signals import post_save
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -97,18 +96,19 @@ class Subscription(models.Model):
     user = models.ManyToManyField(User)
 
 
-# @receiver(post_save, sender=Ad)
-# def send_new_ad_notification_email(sender, instance, created, **kwargs):
-#     if created:
-#         name = instance.name
-#         subject = "Новое объявление"
-#         message = f"Кто-то продает {name}. Спеши посмотреть!"
-#
-#         send_mail(
-#             subject,
-#             message,
-#             "badwolfproduction.com",
-#             ["Кому - хороший вопрос!"],  # Получить список
-#             fail_silently=False,
-#         )
+@receiver(post_save, sender=Ad)
+def send_new_ad_notification_email(sender, instance, created, **kwargs):
+    emails = [user.email for user in User.objects.all()]
+    if created:
+        name = instance.name
+        subject = "Новое объявление"
+        message = f"Кто-то продает {name}. Спеши посмотреть!"
+
+        send_mail(
+            subject,
+            message,
+            "badwolfproduction.com",
+            emails,
+            fail_silently=False,
+        )
 
