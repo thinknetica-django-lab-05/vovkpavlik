@@ -30,7 +30,7 @@ class BaseModel(models.Model):
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     itn = models.CharField(
-        "ИНН", max_length=100,
+        "ИНН", max_length=11,
         default="000000000",
         validators=[validate_itn]
     )
