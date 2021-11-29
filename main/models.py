@@ -9,13 +9,6 @@ from pytils import translit
 from main.validator import validate_itn
 
 
-# Это надо переделать. это шляпа
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        instance.groups.add(Group.objects.get(name="common users"))
-
-
 class BaseModel(models.Model):
     name = models.CharField("Название", max_length=100)
 
@@ -96,18 +89,25 @@ class Subscription(models.Model):
     user = models.ManyToManyField(User)
 
 
-# @receiver(post_save, sender=Ad)
-# def send_new_ad_notification_email(sender, instance, created, **kwargs):
-#     emails = [user.email for user in User.objects.all()]
-#     if created:
-#         name = instance.name
-#         subject = "Новое объявление"
-#         message = f"Кто-то продает {name}. Спеши посмотреть!"
-#
-#         send_mail(
-#             subject,
-#             message,
-#             emails,
-#             fail_silently=False,
-#         )
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        instance.groups.add(Group.objects.get(name="common users"))
 
+
+@receiver(post_save, sender=Ad)
+def send_new_ad_notification_email(sender, instance, created, **kwargs):
+    user_emails = [user.email for user in User.objects.exclude(subscription=None)]
+    company_email = "badwolfproduction.com"
+    if created:
+        name = instance.name
+        subject = "Новое объявление"
+        message = f"Кто-то продает {name}. Спеши посмотреть!"
+
+        send_mail(
+            subject,
+            message,
+            company_email,
+            user_emails,
+            fail_silently=False,
+        )
