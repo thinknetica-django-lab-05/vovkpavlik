@@ -18,7 +18,7 @@ class FlatPageAdmin(admin.ModelAdmin):
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ["user", "get_count_adds",]
+    list_display = ["user", "get_count_adds"]
 
 
 @admin.register(Category)
