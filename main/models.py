@@ -3,10 +3,11 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 from pytils import translit
 
 from main.validator import validate_itn
-from main.ad_notifications import start_emailing
+from main.new_ads_message import send_new_ads_message
 
 
 class BaseModel(models.Model):
@@ -95,4 +96,4 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.groups.add(Group.objects.get(name="common users"))
 
 
-start_emailing(Ad)
+send_new_ads_message()
