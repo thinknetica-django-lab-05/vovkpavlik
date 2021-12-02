@@ -23,6 +23,7 @@ class IndexTemplateView(TemplateView):
 
 class AdListView(ListView):
     model = Ad
+    ordering = ['-created_at']
     paginate_by = 5
 
     def get_context_data(self, **kwargs):

@@ -96,4 +96,4 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.groups.add(Group.objects.get(name="common users"))
 
 
-send_new_ads_message()
+# send_new_ads_message()
