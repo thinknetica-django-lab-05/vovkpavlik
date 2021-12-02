@@ -18,9 +18,6 @@ class SellerForm(ModelForm):
         fields = ["itn"]
 
 
-
-
-
 ImageFormset = inlineformset_factory(
     Ad,
     AdPicture,
