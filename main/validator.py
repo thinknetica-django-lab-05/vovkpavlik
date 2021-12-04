@@ -1,7 +1,17 @@
+import re
+
 from django.core.exceptions import ValidationError
 
 
 def validate_itn(inn):
+    pattern = "\D"
+    symbols = re.search(pattern, inn)
+    if symbols:
+        raise ValidationError(
+            "inn must contains numbers",
+            params={"inn": inn}
+        )
+
     if len(inn) not in (10, 12):
         raise ValidationError(
             "inn contains the wrong number of characters",

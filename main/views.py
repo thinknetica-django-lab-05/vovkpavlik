@@ -25,6 +25,12 @@ class AdListView(ListView):
     model = Ad
     paginate_by = 5
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user = self.request.user
+        context["banned_user"] = user.groups.filter(name="banned users")
+        return context
+
     def get_queryset(self):
         tag = self.request.GET.get("tag")
         if tag:
@@ -71,7 +77,6 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"
-    success_url = reverse_lazy("index")
     fields = "__all__"
     login_url = "/accounts/login/"
 
@@ -91,11 +96,13 @@ class AdCreateView(LoginRequiredMixin, CreateView):
         else:
             return form.invalid()
 
+    def get_success_url(self):
+        return reverse_lazy("ad-detail", args=(self.object.id,))
+
 
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
-    success_url = reverse_lazy("index")
     fields = "__all__"
     login_url = "/accounts/login/"
 
@@ -105,8 +112,9 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
         self.object = self.get_object()
+        form = self.get_form()
+        print(self.object.id)
         formset = ImageFormset(request.POST, request.FILES, instance=self.object)
         if form.is_valid():
             form.save()
@@ -115,3 +123,6 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return form.invalid()
+
+    def get_success_url(self):
+        return reverse_lazy("ad-detail", args=(self.object.id,))
