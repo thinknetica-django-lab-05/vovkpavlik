@@ -5,7 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 scheduler = BackgroundScheduler(timezone='Europe/Moscow')
 
 
-@scheduler.scheduled_job('cron', id='new_ads_message', day_of_week="thu", hour='11', minute=21)
+@scheduler.scheduled_job('cron', id='new_ads_message', day_of_week="mon", hour=10, minute=0)
 def send_new_ads_message():
     send_mail(
         "ALARM!",

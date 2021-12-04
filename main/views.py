@@ -30,7 +30,7 @@ class AdListView(ListView):
         context = super().get_context_data()
         user = self.request.user
         context["banned_user"] = user.groups.filter(name="banned users")
-        context["current_user"] = self.request.user # Новая
+        context["current_user"] = self.request.user  # Текущий пользователь
         return context
 
     def get_queryset(self):
