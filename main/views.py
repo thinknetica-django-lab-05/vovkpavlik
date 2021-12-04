@@ -31,7 +31,6 @@ class AdListView(ListView):
             queryset = Ad.objects.filter(tag__name=tag)
         else:
             queryset = super().get_queryset()
-        
         return queryset
     
     extra_context = {
