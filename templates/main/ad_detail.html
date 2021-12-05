@@ -2,6 +2,7 @@
 
 
 {% block content %}
+
   <h1>{{ object.seller }}</h1>
   <h1>{{ object.name }}</h1>
   <p>{{ object.description }}</p>
@@ -9,4 +10,8 @@
     {% for picture in object.adpicture_set.all %}
         <img src="{{ picture.image.url }}" width="600" alt="Картинка">
     {% endfor %}
+  <div class="col">
+    <a class="btn btn-success" href="{% url 'update_ad' object.id %}" role="button">Редактировать объявление</a>
+  </div>
+
 {% endblock %}
