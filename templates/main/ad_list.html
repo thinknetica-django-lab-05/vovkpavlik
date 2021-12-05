@@ -28,7 +28,8 @@
             <tbody>
               <tr>
 {#              Добавим ниже ссылку на объявления продавца#}
-                <td><a href="{{ ad.id }}">{{ ad.seller }}</a></td>
+                <td><a href="{% url 'ad-list' %}?seller={{ ad.seller }}">{{ ad.seller}}</a></td>
+{#                <td><a href="{{ ad.id }}">{{ ad.seller }}</a></td>#}
                 <td><a href="{{ ad.id }}">{{ ad.name}}</a></td>
               </tr>
             </tbody>

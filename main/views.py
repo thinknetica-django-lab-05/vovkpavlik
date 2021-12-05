@@ -35,8 +35,11 @@ class AdListView(ListView):
 
     def get_queryset(self):
         tag = self.request.GET.get("tag")
+        seller = self.request.GET.get("seller")
         if tag:
             queryset = Ad.objects.filter(tag__name=tag)
+        elif seller:
+            queryset = Ad.objects.filter(seller__user__username=seller)
         else:
             queryset = super().get_queryset()
         return queryset
