@@ -10,8 +10,10 @@
     {% for picture in object.adpicture_set.all %}
         <img src="{{ picture.image.url }}" width="600" alt="Картинка">
     {% endfor %}
-  <div class="col">
-    <a class="btn btn-success" href="{% url 'update_ad' object.id %}" role="button">Редактировать объявление</a>
-  </div>
+  {% if request.user.seller == object.seller %}
+    <div class="col">
+      <a class="btn btn-success" href="{% url 'update_ad' object.id %}" role="button">Редактировать объявление</a>
+    </div>
+  {% endif %}
 
 {% endblock %}
