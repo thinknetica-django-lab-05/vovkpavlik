@@ -109,7 +109,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
-    fields = "__all__"
+    fields = ("name", "description", "category", "tag", "price")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
