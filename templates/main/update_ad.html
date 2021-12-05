@@ -2,10 +2,14 @@
 
 {% block content %}
 
-  <form enctype="multipart/form-data" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    {{ picture_form.as_p }}
-    <input type="submit" value="Отправить"></p>
-  </form>
+  {% if request.user.seller == seller %}
+    <form enctype="multipart/form-data" method="post">{% csrf_token %}
+      {{ form.as_p }}
+      {{ picture_form.as_p }}
+      <input type="submit" value="Отправить"></p>
+    </form>
+  {% endif %}
+
+  <h1>Вы не можете редактировать чужое объявление</h1>
 
 {% endblock %}

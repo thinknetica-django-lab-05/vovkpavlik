@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic import UpdateView, CreateView, TemplateView
@@ -116,6 +115,7 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self):
         context = super().get_context_data()
         context["picture_form"] = ImageFormset(instance=self.object)
+        context["seller"] = self.object.seller
         return context
 
     def post(self, request, *args, **kwargs):
