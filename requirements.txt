@@ -7,3 +7,4 @@ sorl-thumbnail==12.7.0
 django-allauth==0.46.*
 apscheduler
 django-redis
+celery

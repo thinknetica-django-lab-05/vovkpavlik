@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 
-from django.contrib.auth.models import User
+`from django.contrib.auth.models import User
 from main.models import Category, Ad, Seller, Tag
 
 
@@ -90,4 +90,12 @@ for seller in Seller.objects.all():
     filter_sellers.count()
 
 
+# Celery tasks
 
+from main.tasks import summing, hello
+hello_task = hello.delay()
+hello_task.status
+hello_task.result
+
+sum_task = summing.run(5151515, 2145)
+sum_task
