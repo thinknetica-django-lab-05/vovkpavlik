@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+
+  <div class="container">
+    <div class="row">
+      {% if not banned_user %}
+        <div class="col">
+          <a class="btn btn-success" href="{% url 'create-ad' %}" role="button">Создать объявление</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+            </tr>
+          </thead>
+          {% for ad in current_user.seller.ad_set.all %}
+                <tbody>
+                  <tr>
+                    <th scope="row">{{ ad.id }}</th>
+                    <td><a href="{{ ad.id }}">{{ ad.name}}</a></td>
+                  </tr>
+                </tbody>
+          {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

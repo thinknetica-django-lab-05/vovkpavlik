@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
-from main.forms import UserForm, AdForm, ImageFormset
+from main.forms import UserForm, ImageFormset
 
 
 class IndexTemplateView(TemplateView):
@@ -23,12 +23,14 @@ class IndexTemplateView(TemplateView):
 
 class AdListView(ListView):
     model = Ad
+    ordering = ['-created_at']
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
         context["banned_user"] = user.groups.filter(name="banned users")
+        context["current_user"] = self.request.user  # Текущий пользователь
         return context
 
     def get_queryset(self):
@@ -77,18 +79,21 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"
-    fields = "__all__"
+    fields = ("name", "description", "category", "tag", "price")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
         context = super().get_context_data()
         context["picture_form"] = ImageFormset()
+        context["user"] = self.request.user
         return context
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         if form.is_valid():
-            self.object = form.save()  # Создается объект из основной формы
+            self.object = form.save(commit=False)  # Создается объект из основной формы
+            self.object.seller = self.request.user.seller
+            self.object.save()
             formset = ImageFormset(request.POST, request.FILES, instance=self.object)
             if formset.is_valid():
                 formset.save()
@@ -114,7 +119,6 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
-        print(self.object.id)
         formset = ImageFormset(request.POST, request.FILES, instance=self.object)
         if form.is_valid():
             form.save()

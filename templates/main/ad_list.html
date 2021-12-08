@@ -2,35 +2,40 @@
 
 
 {% block content %}
-
   <div class="container">
-    {% if not banned_user %}
-      <div class="row">
-        <div class="col-6">
+    <div class="row">
+      {% if not banned_user %}
+        <div class="col">
           <a class="btn btn-success" href="{% url 'create-ad' %}" role="button">Создать объявление</a>
         </div>
+      {% endif %}
+      <div class="col">
+        <a class="btn btn-success" href="{% url 'user-ad-list' %}" role="button">Мои объявления</a>
       </div>
-    {% endif %}
+    </div>
+
 
     <div class="row">
       <div class="col">
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Title</th>
+              <th scope="col">Продавец</th>
+              <th scope="col">Название</th>
             </tr>
           </thead>
           {% for ad in object_list %}
-            <tbody> 
+            <tbody>
               <tr>
-                <th scope="row">{{ ad.id }}</th>
-                <td><li><a href="{{ ad.id }}">{{ ad.name}}</a></li></td>
+{#              Добавим ниже ссылку на объявления продавца#}
+                <td><a href="{{ ad.id }}">{{ ad.seller }}</a></td>
+                <td><a href="{{ ad.id }}">{{ ad.name}}</a></td>
               </tr>
             </tbody>
           {% endfor %}
         </table>
       </div>
+
       <div class="col-6">
         <ul>
           {% for tag in tags %}
