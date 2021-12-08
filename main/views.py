@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic import UpdateView, CreateView, TemplateView
@@ -30,13 +29,15 @@ class AdListView(ListView):
         context = super().get_context_data()
         user = self.request.user
         context["banned_user"] = user.groups.filter(name="banned users")
-        context["current_user"] = self.request.user  # Текущий пользователь
         return context
 
     def get_queryset(self):
         tag = self.request.GET.get("tag")
+        seller = self.request.GET.get("seller")
         if tag:
             queryset = Ad.objects.filter(tag__name=tag)
+        elif seller:
+            queryset = Ad.objects.filter(seller__user__username=seller)
         else:
             queryset = super().get_queryset()
         return queryset
@@ -108,12 +109,13 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
-    fields = "__all__"
+    fields = ("name", "description", "category", "tag", "price")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
         context = super().get_context_data()
         context["picture_form"] = ImageFormset(instance=self.object)
+        context["seller"] = self.object.seller
         return context
 
     def post(self, request, *args, **kwargs):

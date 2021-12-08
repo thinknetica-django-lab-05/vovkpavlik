@@ -10,7 +10,7 @@
         </div>
       {% endif %}
       <div class="col">
-        <a class="btn btn-success" href="{% url 'user-ad-list' %}" role="button">Мои объявления</a>
+        <a class="btn btn-success" href="{% url 'ad-list' %}?seller={{ request.user }}" role="button">Мои объявления</a>
       </div>
     </div>
 
@@ -27,8 +27,7 @@
           {% for ad in object_list %}
             <tbody>
               <tr>
-{#              Добавим ниже ссылку на объявления продавца#}
-                <td><a href="{{ ad.id }}">{{ ad.seller }}</a></td>
+                <td><a href="{% url 'ad-list' %}?seller={{ ad.seller }}">{{ ad.seller}}</a></td>
                 <td><a href="{{ ad.id }}">{{ ad.name}}</a></td>
               </tr>
             </tbody>
