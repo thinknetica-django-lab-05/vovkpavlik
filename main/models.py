@@ -7,8 +7,8 @@ from django.dispatch import receiver
 from pytils import translit
 
 from main.validator import validate_itn
-from main.new_ads_message import send_new_ads_message
-
+# from main.new_ads_message import send_new_ads_message
+from main.signals import sending_mail
 
 class BaseModel(models.Model):
     name = models.CharField("Название", max_length=100)
@@ -96,4 +96,6 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.groups.add(Group.objects.get(name="common users"))
 
 
-send_new_ads_message()
+# send_new_ads_message()
+
+sending_mail(Ad)
