@@ -6,7 +6,6 @@ from django.dispatch import receiver
 from pytils import translit
 
 from main.validator import validate_itn
-# from main.tasks import new_ads_message_task
 
 
 class BaseModel(models.Model):
@@ -93,6 +92,3 @@ class Subscription(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(Group.objects.get(name="common users"))
-
-
-# new_ads_message_task()

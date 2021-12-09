@@ -21,7 +21,7 @@ def debug_task(self):
 app.conf.beat_schedule = {
     # send messages every week about new ads.
     'new_ads_messages': {
-        'task': 'main.tasks.new_ads_message_task',
+        'task': 'main.tasks.send_new_ads_message_task',
         'schedule': crontab(
             day_of_week='sunday',
             hour=11,
