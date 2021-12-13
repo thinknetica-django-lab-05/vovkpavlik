@@ -1,13 +1,18 @@
+from datetime import timedelta
+
+from django.utils import timezone
+
 from celery import shared_task
-from django.core.mail import send_mail
+
+from main.messages import send_new_ads_message
+
+
+ENDING_WEEK_DAY = timezone.now()
+BEGINNING_WEEK_DAY = ENDING_WEEK_DAY - timedelta(days=7)
 
 
 @shared_task
-def new_ads_message_task(user_emails, company_email, subject, message):
-    send_mail(
-        subject,
-        message,
-        company_email,
-        user_emails,
-        fail_silently=True,
-    )
+def send_new_ads_message_task():
+    beginning_week = BEGINNING_WEEK_DAY
+    ending_week = ENDING_WEEK_DAY
+    send_new_ads_message(beginning_week, ending_week)

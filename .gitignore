@@ -144,3 +144,8 @@ cython_debug/
 test.py
 
 /static/
+
+celerybeat-schedule
+
+ssh_key
+ssh_key.pub

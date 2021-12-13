@@ -3,12 +3,10 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
 from pytils import translit
 
 from main.validator import validate_itn
-# from main.new_ads_message import send_new_ads_message
-from main.signals import sending_mail
+
 
 class BaseModel(models.Model):
     name = models.CharField("Название", max_length=100)
@@ -94,8 +92,3 @@ class Subscription(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(Group.objects.get(name="common users"))
-
-
-# send_new_ads_message()
-
-sending_mail(Ad)
