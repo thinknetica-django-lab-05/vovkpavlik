@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from pytils import translit
+from phone_field import PhoneField
 
 from main.validator import validate_itn
 
@@ -26,6 +27,7 @@ class Seller(models.Model):
         validators=[validate_itn]
     )
     avatar = models.ImageField(upload_to="images/avatars/", default="images/avatars/default-avatar.jpg")
+    phone = PhoneField(blank=True, help_text="user's phone number")
 
     @property
     def get_count_adds(self):
