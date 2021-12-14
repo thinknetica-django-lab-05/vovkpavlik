@@ -22,7 +22,7 @@ class IndexTemplateView(TemplateView):
         return context
 
 
-@method_decorator(cache_page(60 * 5), name='dispatch')
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class AdListView(ListView):
     model = Ad
     ordering = ['-created_at']
@@ -50,6 +50,7 @@ class AdListView(ListView):
     }
 
 
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class AdDetailView(DetailView):
     model = Ad
     template_name = "main/ad_detail.html"
