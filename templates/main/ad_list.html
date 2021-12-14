@@ -2,74 +2,174 @@
 
 
 {% block content %}
+
+  <style>
+    .wrapper {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border: 3px solid #000;
+    }
+    .pagination {
+        position: fixed;
+    }
+  </style>
+
   <div class="container">
     <div class="row">
-      {% if not banned_user %}
-        <div class="col">
-          <a class="btn btn-success" href="{% url 'create-ad' %}" role="button">Создать объявление</a>
-        </div>
-      {% endif %}
-      <div class="col">
-        <a class="btn btn-success" href="{% url 'ad-list' %}?seller={{ request.user }}" role="button">Мои объявления</a>
-      </div>
-    </div>
+     <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3 d-flex justify-content-center">LEFT</div>
+
+{#Center#}
 
 
-    <div class="row">
-      <div class="col">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Продавец</th>
-              <th scope="col">Название</th>
-            </tr>
-          </thead>
-          {% for ad in object_list %}
-            <tbody>
-              <tr>
-                <td><a href="{% url 'ad-list' %}?seller={{ ad.seller }}">{{ ad.seller}}</a></td>
-                <td><a href="{{ ad.id }}">{{ ad.name}}</a></td>
-              </tr>
-            </tbody>
+     <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+
+{#     buttons#}
+       <div class="row">
+         {% if not banned_user %}
+         <div class="col flex justify-content-center text-center">
+           <a class="btn btn-success" href="{% url 'create-ad' %}" role="button">Создать объявление</a>
+         </div>
+         {% endif %}
+         <div class="col flex justify-content-center text-center">
+           <a class="btn btn-success" href="{% url 'ad-list' %}?seller={{ request.user }}" role="button">Мои объявления</a>
+         </div>
+       </div>
+{#     buttons#}
+
+        {% for ad in object_list %}
+          <div class="wrapper">
+          <div class="row">
+            <a href="{{ ad.id }}"><h3><center>{{ ad.name}}</center></h3></a>
+          </div>
+          <div class="row">
+            {% for picture in ad.adpicture_set.all %}
+              <img src="{{ picture.image.url }}" alt="Картинка">
+            {% endfor %}
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <a href="{% url 'ad-list' %}?seller={{ ad.seller }}">Продавец:  {{ ad.seller }}</a>
+            </div>
+            <div class="col">
+            <a href="{{ ad.id }}">Опубликовано:  {{ ad.created_at}}</a>
+            </div>
+          </div>
+          </div>
+        {% endfor %}
+
+{# ПАГИНАЦИЯ#}
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+
+          {% for page in page_obj.paginator.page_range %}
+              <li class="page-item">
+                <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page }}">{{ page }}</a>
+              </li>
           {% endfor %}
-        </table>
-      </div>
 
-      <div class="col-6">
-        <ul>
-          {% for tag in tags %}
-            <li><a href="{% url 'ad-list' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>
-          {% endfor %}
-      </ul>
-      </div>
-    <div class="row">
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+{# ПАГИНАЦИЯ#}
+
+
+{#Center#}
+
+
+     <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3 d-flex justify-content-center">
+
+     </div>
+
     </div>
   </div>
 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-      {% endif %}  
-
-      {% for page in page_obj.paginator.page_range %}
-          <li class="page-item">
-            <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page }}">{{ page }}</a>
-          </li>      
-      {% endfor %}
-
-      {% if page_obj.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.next_page_number }}" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>     
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
-
 {% endblock %}
+
+
+
+{#{% block content %}#}
+{#  <div class="container">#}
+{#    <div class="row">#}
+{#      {% if not banned_user %}#}
+{#        <div class="col">#}
+{#          <a class="btn btn-success" href="{% url 'create-ad' %}" role="button">Создать объявление</a>#}
+{#        </div>#}
+{#      {% endif %}#}
+{#      <div class="col">#}
+{#        <a class="btn btn-success" href="{% url 'ad-list' %}?seller={{ request.user }}" role="button">Мои объявления</a>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{##}
+{#    <div class="row">#}
+{#      <div class="col">#}
+{#        <table class="table">#}
+{#          <thead>#}
+{#            <tr>#}
+{#              <th scope="col">Продавец</th>#}
+{#              <th scope="col">Название</th>#}
+{#            </tr>#}
+{#          </thead>#}
+{#          {% for ad in object_list %}#}
+{#            <tbody>#}
+{#              <tr>#}
+{#                <td><a href="{% url 'ad-list' %}?seller={{ ad.seller }}">{{ ad.seller}}</a></td>#}
+{#                <td><a href="{{ ad.id }}">{{ ad.name}}</a></td>#}
+{#              </tr>#}
+{#            </tbody>#}
+{#          {% endfor %}#}
+{#        </table>#}
+{#      </div>#}
+{##}
+{#      <div class="col-6">#}
+{#        <ul>#}
+{#          {% for tag in tags %}#}
+{#            <li><a href="{% url 'ad-list' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>#}
+{#          {% endfor %}#}
+{#      </ul>#}
+{#      </div>#}
+{#    <div class="row">#}
+{#    </div>#}
+{#  </div>#}
+{##}
+{#  <nav aria-label="Page navigation example">#}
+{#    <ul class="pagination">#}
+{#      {% if page_obj.has_previous %}#}
+{#        <li class="page-item">#}
+{#          <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.previous_page_number }}" aria-label="Previous">#}
+{#            <span aria-hidden="true">&laquo;</span>#}
+{#          </a>#}
+{#        </li>#}
+{#      {% endif %}#}
+{##}
+{#      {% for page in page_obj.paginator.page_range %}#}
+{#          <li class="page-item">#}
+{#            <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page }}">{{ page }}</a>#}
+{#          </li>#}
+{#      {% endfor %}#}
+{##}
+{#      {% if page_obj.has_next %}#}
+{#        <li class="page-item">#}
+{#          <a class="page-link" href="{% url 'ad-list' %}?tag={{request.GET.tag}}&page={{ page_obj.next_page_number }}" aria-label="Next">#}
+{#            <span aria-hidden="true">&raquo;</span>#}
+{#          </a>#}
+{#        </li>#}
+{#      {% endif %}#}
+{#    </ul>#}
+{#  </nav>#}
+{##}
+{#{% endblock %}#}
