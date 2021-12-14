@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
@@ -7,6 +8,11 @@ from pytils import translit
 from phone_field import PhoneField
 
 from main.validator import validate_itn
+
+
+def get_random_code():
+    random_code = random.randint(1000, 9999)
+    return str(random_code)
 
 
 class BaseModel(models.Model):
@@ -90,7 +96,16 @@ class Subscription(models.Model):
     user = models.ManyToManyField(User)
 
 
+class SMSLog(models.Model):
+    seller = models.OneToOneField(Seller, on_delete=models.CASCADE, null=True)
+    code = models.CharField(max_length=4, default=get_random_code)
+    confirmed = models.BooleanField("Номер подтвержден", null=True)
+    response = models.TextField()
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(Group.objects.get(name="common users"))
+
+
