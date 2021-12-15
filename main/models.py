@@ -99,7 +99,7 @@ class Subscription(models.Model):
 
 class SMSLog(models.Model):
     seller = models.OneToOneField(Seller, on_delete=models.CASCADE, null=True)
-    code = models.CharField(max_length=4, default=get_random_code)
+    code = models.CharField(max_length=4)
     confirmed = models.BooleanField("Номер подтвержден", null=True)
     response = models.TextField()
 

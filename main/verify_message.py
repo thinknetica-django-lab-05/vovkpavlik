@@ -6,16 +6,16 @@ from twilio.rest import Client
 load_dotenv()
 
 
-def send_verify_code():
+def send_verify_code(code, number):
     account_sid = os.getenv("ACCOUNT_SID_TWILIO")
     auth_token = os.environ['AUTH_TOKEN_TWILIO']
     client = Client(account_sid, auth_token)
 
     message = client.messages \
         .create(
-        body="2165",
+        body=code,
         from_='+15156051635',
-        to='+79788432861'
+        to=number
     )
 
     return message.sid

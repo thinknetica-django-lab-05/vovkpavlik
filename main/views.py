@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
-from main.forms import UserForm, ImageFormset
+from main.forms import UserForm, SMSLogForm, ImageFormset
 
 
 class IndexTemplateView(TemplateView):
@@ -71,6 +71,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user_form"] = UserForm(instance=self.object.user)
+        context["smslog_form"] = SMSLogForm(instance=self.object)
         return context
 
     def form_valid(self, form):
@@ -78,6 +79,10 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         user_form = UserForm(self.request.POST, instance=self.request.user)
         if user_form.is_valid():
             user_form.save()
+            # после этого: вываливается новая форма с полем для кода
+            # отправляется код:
+            # проверяется код
+            # сохраняется экземпляр в SMSLog
         return super().form_valid(form)
 
 
