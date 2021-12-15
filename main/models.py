@@ -8,6 +8,7 @@ from pytils import translit
 from phone_field import PhoneField
 
 from main.validator import validate_itn
+from main.verify_message import send_verify_code
 
 
 def get_random_code():
@@ -33,7 +34,7 @@ class Seller(models.Model):
         validators=[validate_itn]
     )
     avatar = models.ImageField(upload_to="images/avatars/", default="images/avatars/default-avatar.jpg")
-    phone = PhoneField(blank=True, help_text="user's phone number")
+    phone = models.CharField(max_length=12, blank=True, help_text="Номер телефона пользователя")
 
     @property
     def get_count_adds(self):
@@ -109,3 +110,8 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.groups.add(Group.objects.get(name="common users"))
 
 
+# Это надо будет перенести во вьюху
+@receiver(post_save, sender=User)
+def create_verify_code(sender, instance, created, **kwargs):
+    if created:
+        send_verify_code()

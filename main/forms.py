@@ -15,7 +15,7 @@ class SellerForm(ModelForm):
 
     class Meta:
         model = Seller
-        fields = ["itn"]
+        fields = ["itn", "phone"]
 
 
 ImageFormset = inlineformset_factory(
