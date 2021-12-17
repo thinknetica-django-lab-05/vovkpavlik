@@ -18,13 +18,6 @@ class SellerForm(ModelForm):
         fields = ["itn", "phone"]
 
 
-class SMSLogForm(ModelForm):
-
-    class Meta:
-        model = SMSLog
-        fields = ["code"]
-
-
 ImageFormset = inlineformset_factory(
     Ad,
     AdPicture,

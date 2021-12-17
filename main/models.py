@@ -5,13 +5,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from pytils import translit
-from phone_field import PhoneField
 
 from main.validator import validate_itn
-from main.verify_message import send_verify_code
 
 
-def get_random_code():
+def get_random_code(code, phone):
     random_code = random.randint(1000, 9999)
     return str(random_code)
 
@@ -99,7 +97,7 @@ class Subscription(models.Model):
 
 class SMSLog(models.Model):
     seller = models.OneToOneField(Seller, on_delete=models.CASCADE, null=True)
-    code = models.CharField(max_length=4)
+    code = models.CharField(max_length=4, default=get_random_code)
     confirmed = models.BooleanField("Номер подтвержден", null=True)
     response = models.TextField()
 
@@ -108,10 +106,3 @@ class SMSLog(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(Group.objects.get(name="common users"))
-
-
-# Это надо будет перенести во вьюху
-@receiver(post_save, sender=User)
-def create_verify_code(sender, instance, created, **kwargs):
-    if created:
-        send_verify_code()
