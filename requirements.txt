@@ -8,3 +8,4 @@ django-allauth==0.46.*
 apscheduler
 django-redis
 celery
+twilio
