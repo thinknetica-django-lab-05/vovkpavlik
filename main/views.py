@@ -82,10 +82,6 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-    def field_validation(self):
-
-
-
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"

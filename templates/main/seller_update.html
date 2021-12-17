@@ -4,12 +4,6 @@
   <form action="{% url 'seller-info' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-
-    {% if object.phone %}
-      <label for="code">Введите полученный код:</label><br>
-      <input type="text" id="code" name="code"><br>
-    {% endif %}
-
     {{ user_form.as_p }}
     <button type="submit">Update</button>
   </form>
