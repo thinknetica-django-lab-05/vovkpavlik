@@ -1,4 +1,7 @@
+import random
+
 from django.http import HttpResponseRedirect
+from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.views.generic.list import ListView
@@ -50,11 +53,19 @@ class AdListView(ListView):
     }
 
 
-@method_decorator(cache_page(60 * 60), name='dispatch')
 class AdDetailView(DetailView):
     model = Ad
     template_name = "main/ad_detail.html"
     slug_field = "id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user = self.request.user
+        context["banned_user"] = user.groups.filter(name="banned users")
+        if not cache.get("dynamic_price"):
+            cache.set("dynamic_price", round(self.object.price * random.uniform(0.8, 1.2)), 60)
+        context["dynamic_price"] = cache.get("dynamic_price")
+        return context
 
 
 class SellerUpdateView(LoginRequiredMixin, UpdateView):
