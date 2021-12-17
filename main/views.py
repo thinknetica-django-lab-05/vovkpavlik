@@ -59,11 +59,9 @@ class AdDetailView(DetailView):
     slug_field = "id"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        user = self.request.user
-        context["banned_user"] = user.groups.filter(name="banned users")
         if not cache.get("dynamic_price"):
             cache.set("dynamic_price", round(self.object.price * random.uniform(0.8, 1.2)), 60)
+        context = super().get_context_data()
         context["dynamic_price"] = cache.get("dynamic_price")
         return context
 
