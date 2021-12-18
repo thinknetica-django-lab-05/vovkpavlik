@@ -8,7 +8,10 @@ def send_new_ads_message(beginning_week, ending_week):
     ads = Ad.objects.filter(created_at__range=[beginning_week, ending_week])
     ads_names = [ad.name for ad in ads]
 
-    user_emails = [user.email for user in User.objects.exclude(subscription=None)]
+    user_emails = [
+        user.email for user
+        in User.objects.exclude(subscription=None)
+    ]
     company_email = "badwolfproduction@gmail.com"
     subject = "New ads at BadWolfProduction.com"
     message = f"Объявления за прошедшую неделю: {ads_names}"
