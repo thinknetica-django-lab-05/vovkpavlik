@@ -1,7 +1,7 @@
 from django.forms import ModelForm, inlineformset_factory
 from django.contrib.auth.models import User
 
-from main.models import Seller, Ad, AdPicture, SMSLog
+from main.models import Seller, Ad, AdPicture
 
 
 class UserForm(ModelForm):

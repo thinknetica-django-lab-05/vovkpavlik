@@ -31,8 +31,15 @@ class Seller(models.Model):
         default="000000000",
         validators=[validate_itn]
     )
-    avatar = models.ImageField(upload_to="images/avatars/", default="images/avatars/default-avatar.jpg")
-    phone = models.CharField(max_length=12, blank=True, help_text="Номер телефона пользователя")
+    avatar = models.ImageField(
+        upload_to="images/avatars/",
+        default="images/avatars/default-avatar.jpg"
+    )
+    phone = models.CharField(
+        max_length=12,
+        blank=True,
+        help_text="Номер телефона пользователя"
+    )
 
     @property
     def get_count_adds(self):
@@ -63,8 +70,16 @@ class Tag(BaseModel):
 
 
 class Ad(BaseModel):
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, verbose_name="Продавец")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
+    seller = models.ForeignKey(
+        Seller,
+        on_delete=models.CASCADE,
+        verbose_name="Продавец"
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        verbose_name="Категория"
+    )
     description = models.TextField("Описание")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -87,8 +102,15 @@ class ArchiveAds(Ad):
 
 
 class AdPicture(BaseModel):
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, verbose_name="Объявление")
-    image = models.ImageField(upload_to="images/ads/", default="images/ads/default-product.jpg")
+    ad = models.ForeignKey(
+        Ad,
+        on_delete=models.CASCADE,
+        verbose_name="Объявление"
+    )
+    image = models.ImageField(
+        upload_to="images/ads/",
+        default="images/ads/default-product.jpg"
+    )
 
 
 class Subscription(models.Model):
