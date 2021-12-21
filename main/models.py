@@ -25,6 +25,13 @@ class BaseModel(models.Model):
 
 
 class Seller(models.Model):
+    """
+        Модель продавца.
+        Имеет привязку к пользователю через поле `OneToOne`.
+        Возвращает ИНН, аватарку и номер телефона.
+        Подсчитывает количество созданных объявлений для продавца
+        через декоратор `@property`.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     itn = models.CharField(
         "ИНН", max_length=11,
@@ -53,6 +60,13 @@ class Seller(models.Model):
 
 
 class Category(BaseModel):
+    """
+        Модель категории.
+        Наследуется от базовой модели `BaseModel`.
+        Возвращает название категории и слаг.
+        Переопределен метод `save` для перевода кирилицы
+        в латиницу.
+    """
     slug = models.SlugField(max_length=255, allow_unicode=True)
 
     def save(self, *args, **kwargs):
@@ -66,10 +80,24 @@ class Category(BaseModel):
 
 
 class Tag(BaseModel):
+    """
+        Модель тэга.
+        Наследуется от базовой модели `BaseModel`.
+        Возвращает название тэга.
+    """
     ...
 
 
 class Ad(BaseModel):
+    """
+        Модель объявления.
+        Связана с моделью продавца и моделью категории
+        полем `Foreignkey`.
+        Возвращает продавца, категорию, описание, дату создания
+        и дату редактирования, тэги, цену и статус объявления -
+        архивное или действительное.
+
+    """
     seller = models.ForeignKey(
         Seller,
         on_delete=models.CASCADE,
@@ -102,6 +130,11 @@ class ArchiveAds(Ad):
 
 
 class AdPicture(BaseModel):
+    """
+        Модель изображения для объявлений.
+        Связана с моделью объявления.
+        Возвращает связанное объявление и изображение.
+    """
     ad = models.ForeignKey(
         Ad,
         on_delete=models.CASCADE,
@@ -114,10 +147,23 @@ class AdPicture(BaseModel):
 
 
 class Subscription(models.Model):
+    """
+        Модель подписчика.
+        Связана с моделью пользователя.
+        Пользователю, который подписан на объявления,
+        приходят ежедневные сообщения о новых поступлениях.
+    """
     user = models.ManyToManyField(User)
 
 
 class SMSLog(models.Model):
+    """
+        Модель для подтверждения телефона.
+        Связана с моделью продавца полем `OneToOne`.
+        Возвращает продавца, сгенерированный 4-х значный код подтверждения,
+        ответ от провайдера - сервиса Twilio и статус пользователя - подтвержден
+        номер или нет.
+    """
     seller = models.OneToOneField(Seller, on_delete=models.CASCADE, null=True)
     code = models.CharField(max_length=4, default=get_random_code)
     confirmed = models.BooleanField("Номер подтвержден", null=True)
