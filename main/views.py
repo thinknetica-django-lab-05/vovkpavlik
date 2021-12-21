@@ -47,7 +47,7 @@ class AdListView(ListView):
         else:
             queryset = super().get_queryset()
         return queryset
-    
+
     extra_context = {
         "tags": Tag.objects.all(),
     }
@@ -60,7 +60,11 @@ class AdDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         if not cache.get("dynamic_price"):
-            cache.set("dynamic_price", round(self.object.price * random.uniform(0.8, 1.2)), 60)
+            cache.set(
+                "dynamic_price",
+                round(self.object.price * random.uniform(0.8, 1.2)),
+                60
+            )
         context = super().get_context_data()
         context["dynamic_price"] = cache.get("dynamic_price")
         return context
@@ -106,10 +110,15 @@ class AdCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         if form.is_valid():
-            self.object = form.save(commit=False)  # Создается объект из основной формы
+            # Создается объект из основной формы
+            self.object = form.save(commit=False)
             self.object.seller = self.request.user.seller
             self.object.save()
-            formset = ImageFormset(request.POST, request.FILES, instance=self.object)
+            formset = ImageFormset(
+                request.POST,
+                request.FILES,
+                instance=self.object
+            )
             if formset.is_valid():
                 formset.save()
             return HttpResponseRedirect(self.get_success_url())
@@ -135,7 +144,11 @@ class AdUpdateView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
-        formset = ImageFormset(request.POST, request.FILES, instance=self.object)
+        formset = ImageFormset(
+            request.POST,
+            request.FILES,
+            instance=self.object
+        )
         if form.is_valid():
             form.save()
             if formset.is_valid():

@@ -3,14 +3,17 @@ from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 from django.contrib.flatpages.models import FlatPage
 
-from .models import Seller, Category, Tag, Ad, ArchiveAds, AdPicture, Subscription
+from .models import Seller, Category, Tag, Ad, ArchiveAds
+from .models import AdPicture, Subscription
 
 
 class FlatPageAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
+
     class Meta:
         model = FlatPage
         fields = "__all__"
+
 
 class FlatPageAdmin(admin.ModelAdmin):
     form = FlatPageAdminForm
@@ -50,4 +53,3 @@ class AdPicture(admin.ModelAdmin):
 admin.site.register(Subscription)
 admin.site.register(ArchiveAds)
 admin.site.register(Tag)
-
