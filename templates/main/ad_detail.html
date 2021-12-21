@@ -2,11 +2,10 @@
 
 
 {% block content %}
-
   <h1>{{ object.seller }}</h1>
   <h1>{{ object.name }}</h1>
   <p>{{ object.description }}</p>
-  <h3>{{ object.price }}</h3>
+  <h3>{{ dynamic_price }}</h3>
     {% for picture in object.adpicture_set.all %}
         <img src="{{ picture.image.url }}" width="600" alt="Картинка">
     {% endfor %}

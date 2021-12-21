@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
@@ -6,6 +7,11 @@ from django.dispatch import receiver
 from pytils import translit
 
 from main.validator import validate_itn
+
+
+def get_random_code(code, phone):
+    random_code = random.randint(1000, 9999)
+    return str(random_code)
 
 
 class BaseModel(models.Model):
@@ -26,6 +32,7 @@ class Seller(models.Model):
         validators=[validate_itn]
     )
     avatar = models.ImageField(upload_to="images/avatars/", default="images/avatars/default-avatar.jpg")
+    phone = models.CharField(max_length=12, blank=True, help_text="Номер телефона пользователя")
 
     @property
     def get_count_adds(self):
@@ -86,6 +93,13 @@ class AdPicture(BaseModel):
 
 class Subscription(models.Model):
     user = models.ManyToManyField(User)
+
+
+class SMSLog(models.Model):
+    seller = models.OneToOneField(Seller, on_delete=models.CASCADE, null=True)
+    code = models.CharField(max_length=4, default=get_random_code)
+    confirmed = models.BooleanField("Номер подтвержден", null=True)
+    response = models.TextField()
 
 
 @receiver(post_save, sender=User)

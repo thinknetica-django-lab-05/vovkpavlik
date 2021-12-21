@@ -1,7 +1,7 @@
 from django.forms import ModelForm, inlineformset_factory
 from django.contrib.auth.models import User
 
-from main.models import Seller, Ad, AdPicture
+from main.models import Seller, Ad, AdPicture, SMSLog
 
 
 class UserForm(ModelForm):
@@ -15,7 +15,7 @@ class SellerForm(ModelForm):
 
     class Meta:
         model = Seller
-        fields = ["itn"]
+        fields = ["itn", "phone"]
 
 
 ImageFormset = inlineformset_factory(
