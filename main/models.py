@@ -9,7 +9,7 @@ from pytils import translit
 from main.validator import validate_itn
 
 
-def get_random_code(code, phone):
+def get_random_code():
     random_code = random.randint(1000, 9999)
     return str(random_code)
 
