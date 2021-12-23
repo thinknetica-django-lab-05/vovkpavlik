@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'constance',
     'sorl.thumbnail',
-    'phone_field',
-
+    'channels',
 ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
