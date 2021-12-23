@@ -13,6 +13,19 @@ from django.urls import reverse_lazy
 
 from main.models import Ad, Tag, Seller
 from main.forms import UserForm, ImageFormset
+from django.shortcuts import render
+
+
+def chat_page(request):
+    return render(request, 'main/chat.html')
+
+
+def room(request, room_name):
+    return render(
+        request,
+        'main/room.html',
+        {'room_name': room_name}
+    )
 
 
 class IndexTemplateView(TemplateView):
