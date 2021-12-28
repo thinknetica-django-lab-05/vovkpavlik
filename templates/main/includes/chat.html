@@ -1,5 +1,3 @@
-
-
 <style>
 
 /* Кнопка, используемая для открытия формы чата - закреплена в нижней части страницы */
@@ -18,13 +16,14 @@
 
 /* Всплывающий чат - скрыт по умолчанию */
 .chat-popup {
-  display: none;
+  {#display: none;#}
   position: fixed;
   bottom: 75px;
   right: 15px;
   border: 3px solid #f1f1f1;
   z-index: 9;
 }
+
 
 /* Добавление стилей в контейнер формы */
 .form-container {
@@ -71,29 +70,82 @@
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
+
+.output{
+  background: #DCDCDC;
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+
+  resize: none;
+  min-height: 200px;
+}
+
 </style>
 
 <div class="container-chat">
   <button class="open-button" onclick="openForm()">Чат</button>
 
   <div class="chat-popup" id="myForm">
-    <form action="../action_page.php" class="form-container">
+    <div class="form-container">
       <h1>Чат</h1>
+        <div class="output">
+          <div id="link"></div>
+{#          <p id="link"></p>#}
+        </div>
+      <label for="msg"><b>Введите ваш вопрос</b></label>
+      <input id="chat-message-input" type="text" width=100%><br>
 
-      <label for="msg"><b>Сообщение</b></label>
-      <textarea placeholder="Тип сообщения.." name="msg" required></textarea>
-
-      <button type="submit" class="btn">Отправить</button>
+      <button id="chat-message-submit" type="submit" class="btn">Отправить</button>
       <button type="button" class="btn cancel" onclick="closeForm()">Закрыть</button>
-    </form>
+    </div>
   </div>
-  </div>
-<script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
+</div>
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
+<script>
+  const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/chat/'
+  );
+
+  chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    if (typeof data.not_found !== 'undefined') {
+    document.getElementById('link').textContent = ('Объявление не найдено');
+  } else {
+      let text = ('Перейти к объявлению  ' + data.ad_name);
+      let result = text.link(data.ad_url);
+      document.getElementById('link').innerHTML = result;
+  }};
+
+  chatSocket.onclose = function(e) {
+      console.error('Chat socket closed unexpectedly');
+  };
+
+  document.querySelector('#chat-message-input').focus();
+  document.querySelector('#chat-message-input').onkeyup = function(e) {
+      if (e.keyCode === 13) {  // enter, return
+          document.querySelector('#chat-message-submit').click();
+      }
+  };
+
+  document.querySelector('#chat-message-submit').onclick = function(e) {
+      const messageInputDom = document.querySelector('#chat-message-input');
+      const message = messageInputDom.value;
+      chatSocket.send(JSON.stringify({
+          'message': message
+      }));
+      messageInputDom.value = '';
+  };
+
+    function openForm() {
+  document.getElementById("myForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+  }
+
 </script>
