@@ -25,7 +25,7 @@ class IndexTemplateView(TemplateView):
         return context
 
 
-@method_decorator(cache_page(60 * 60), name='dispatch')
+# @method_decorator(cache_page(60 * 60), name='dispatch')
 class AdListView(ListView):
     model = Ad
     ordering = ['-created_at']

@@ -11,3 +11,5 @@ apscheduler
 django-redis
 celery
 twilio
+channels
+channels-redis
