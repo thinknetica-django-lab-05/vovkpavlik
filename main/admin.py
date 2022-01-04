@@ -43,6 +43,8 @@ class AdAdmin(admin.ModelAdmin):
         "updated_at",
         "is_archive",
     ]
+    # date_hierarchy = 'created_at'
+    list_filter = ('created_at', 'tag')
 
 
 @admin.register(AdPicture)
