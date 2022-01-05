@@ -64,6 +64,7 @@ CKEDITOR_CONFIGS = {
 }
 
 
+#  Изменить CONSTANCE_BACKEND с памяти на БД!
 CONSTANCE_BACKEND = 'constance.backends.memory.MemoryBackend'
 
 CONSTANCE_CONFIG = {
@@ -101,6 +102,8 @@ TEMPLATES = [
 
 ASGI_APPLICATION = "perfectsite.asgi.application"
 
+
+#  Что мне дают CHANNEL_LAYERS ?!
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -117,13 +120,23 @@ WSGI_APPLICATION = 'perfectsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'perfectsite',
+        'USER': 'pavel',
+        # 'PASSWORD': '',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432',
     }
 }
-
 
 CACHES = {
     "default": {
