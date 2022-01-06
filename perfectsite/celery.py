@@ -24,8 +24,8 @@ app.conf.beat_schedule = {
         'task': 'main.tasks.send_new_ads_message_task',
         'schedule': crontab(
             day_of_week='thursday',
-            hour=17,
-            minute=23
+            hour=18,
+            minute=14
         ),
     },
 }

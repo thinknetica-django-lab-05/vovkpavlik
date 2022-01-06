@@ -21,7 +21,6 @@ services:
       - "6379:6379"
 
   web:
-    container_name: "python"
     build:
       context: .
     ports:
@@ -34,6 +33,14 @@ services:
              python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
+      - redis
+
+  celery:
+    build: .
+    command: celery -A perfectsite worker -B
+    volumes:
+      - ..:/app
+    depends_on:
       - redis
 
 volumes:
