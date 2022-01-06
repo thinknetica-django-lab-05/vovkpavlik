@@ -1,21 +1,17 @@
 version: '3'
 
 services:
-  app:
-    build:
-      context: .
-    ports:
-      - "8000:8000"
+
+  db:
+    image: postgres
     volumes:
-      - ..:/app
-    command: >
-      sh -c "python3 manage.py migrate &&
-             python3 manage.py runserver 0.0.0.0:8000"
+      - postgres:/var/lib/postgresql/data
     environment:
-      - DB_NAME=perfectsite
-      - DB_USER=pavel
-    depends_on:
-      - db
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=pavel
+      - POSTGRES_PASSWORD=12345678
+    ports:
+      - "5432:5432"
 
   redis:
     container_name: "myredis"
@@ -24,10 +20,21 @@ services:
     ports:
       - "6379:6379"
 
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=postgres
+  web:
+    container_name: "python"
+    build:
+      context: .
     ports:
-      - "5432:5432"
+      - "8000:8000"
+    volumes:
+      - ..:/app
+    command: >
+      sh -c "python3 manage.py wait_for_db &&
+             python3 manage.py migrate &&
+             python3 manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres:
