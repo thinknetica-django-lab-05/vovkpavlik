@@ -80,15 +80,6 @@ class Category(BaseModel):
         verbose_name_plural = "Categories"
 
 
-class Tag(BaseModel):
-    """
-        Модель тэга.
-        Наследуется от базовой модели `BaseModel`.
-        Возвращает название тэга.
-    """
-    ...
-
-
 class Ad(BaseModel):
     """
         Модель объявления.

@@ -11,7 +11,7 @@ from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from main.models import Ad, Tag, Seller
+from main.models import Ad, Seller
 from main.forms import UserForm, ImageFormset
 
 
