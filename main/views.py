@@ -35,8 +35,7 @@ class AdListView(ListView):
         all_tags = Ad.objects.all().values("tags")
         unique_tags = set()
         for tags in all_tags:
-            for tag in tags["tags"]:
-                unique_tags.add(tag)
+            unique_tags.update(tags['tags'])
         return unique_tags
 
     def get_context_data(self, **kwargs):
@@ -56,11 +55,6 @@ class AdListView(ListView):
         else:
             queryset = super().get_queryset()
         return queryset
-
-    # extra_context = {
-    #     # "tags": Tag.objects.all(),
-    #     'tags': get_tags
-    # }
 
 
 class AdDetailView(DetailView):
@@ -108,7 +102,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"
-    fields = ("name", "description", "category", "tag", "price")
+    fields = ("name", "description", "category", "tags", "price")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
