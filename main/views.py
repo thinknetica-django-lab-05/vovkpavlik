@@ -31,10 +31,19 @@ class AdListView(ListView):
     ordering = ['-created_at']
     paginate_by = 5
 
+    def get_tags(self):
+        all_tags = Ad.objects.all().values("tags")
+        unique_tags = set()
+        for tags in all_tags:
+            for tag in tags["tags"]:
+                unique_tags.add(tag)
+        return unique_tags
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
         context["banned_user"] = user.groups.filter(name="banned users")
+        context["tags"] = self.get_tags
         return context
 
     def get_queryset(self):
@@ -48,9 +57,10 @@ class AdListView(ListView):
             queryset = super().get_queryset()
         return queryset
 
-    extra_context = {
-        "tags": Tag.objects.all(),
-    }
+    # extra_context = {
+    #     # "tags": Tag.objects.all(),
+    #     'tags': get_tags
+    # }
 
 
 class AdDetailView(DetailView):

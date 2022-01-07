@@ -62,7 +62,7 @@
           </form>
           <ul>
             {% for tag in tags %}
-              <li><a href="{% url 'ad-list' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>
+              <li><a href="{% url 'ad-list' %}?tag={{ tag }}">{{ tag}}</a></li>
             {% endfor %}
           </ul>
         </div>
