@@ -50,7 +50,7 @@ class AdListView(ListView):
         tag = self.request.GET.get("tag")
         seller = self.request.GET.get("seller")
         if tag:
-            queryset = Ad.objects.filter(tag__name=tag)
+            queryset = Ad.objects.filter(tags__contains=[tag])
         elif seller:
             queryset = Ad.objects.filter(seller__user__username=seller)
         else:
