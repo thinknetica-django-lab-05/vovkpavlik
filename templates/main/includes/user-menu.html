@@ -1,0 +1,37 @@
+<style>
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+</style>
+
+<div class="dropdown">
+  <a class="navbar-brand" href="#">{{ user.username }}</a>
+  <div class="dropdown-content">
+    <a href="{% url 'ad-list' %}?seller={{ request.user }}">Мои объявления</a>
+    <a href="{% url 'seller-info'%}">Редактировать профиль</a>
+    <a href="{% url 'logout' %}">Выйти</a>
+  </div>
+</div>
