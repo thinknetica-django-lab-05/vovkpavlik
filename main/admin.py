@@ -7,6 +7,11 @@ from .models import Seller, Category, Tag, Ad, ArchiveAds
 from .models import AdPicture, Subscription
 
 
+@admin.action(description="Добавить объявления в архив")
+def make_archived(modeladmin, request, queryset):
+    queryset.update(is_archive=True)
+
+
 class FlatPageAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
 
@@ -43,6 +48,8 @@ class AdAdmin(admin.ModelAdmin):
         "updated_at",
         "is_archive",
     ]
+    list_filter = ["created_at", "tag"]
+    actions = [make_archived]
 
 
 @admin.register(AdPicture)

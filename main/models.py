@@ -109,8 +109,8 @@ class Ad(BaseModel):
         verbose_name="Категория"
     )
     description = models.TextField("Описание")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
     tag = models.ManyToManyField(Tag, verbose_name="Тэги")
     price = models.PositiveIntegerField("Цена", default=0)
     is_archive = models.BooleanField("Продано", null=True)
