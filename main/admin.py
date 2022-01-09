@@ -3,7 +3,7 @@ from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 from django.contrib.flatpages.models import FlatPage
 
-from .models import Seller, Category, Tag, Ad, ArchiveAds
+from .models import Seller, Category, Ad, ArchiveAds
 from .models import AdPicture, Subscription
 
 
@@ -48,7 +48,7 @@ class AdAdmin(admin.ModelAdmin):
         "updated_at",
         "is_archive",
     ]
-    list_filter = ["created_at", "tag"]
+    list_filter = ["created_at", "tags"]
     actions = [make_archived]
 
 
@@ -59,4 +59,3 @@ class AdPicture(admin.ModelAdmin):
 
 admin.site.register(Subscription)
 admin.site.register(ArchiveAds)
-admin.site.register(Tag)

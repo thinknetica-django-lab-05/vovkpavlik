@@ -1,6 +1,7 @@
 import random
 from django.db import models
 from django.contrib.auth.models import User, Group
+from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -79,15 +80,6 @@ class Category(BaseModel):
         verbose_name_plural = "Categories"
 
 
-class Tag(BaseModel):
-    """
-        Модель тэга.
-        Наследуется от базовой модели `BaseModel`.
-        Возвращает название тэга.
-    """
-    ...
-
-
 class Ad(BaseModel):
     """
         Модель объявления.
@@ -111,7 +103,7 @@ class Ad(BaseModel):
     description = models.TextField("Описание")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
-    tag = models.ManyToManyField(Tag, verbose_name="Тэги")
+    tags = ArrayField(models.CharField(max_length=200), null=True)
     price = models.PositiveIntegerField("Цена", default=0)
     is_archive = models.BooleanField("Продано", null=True)
 

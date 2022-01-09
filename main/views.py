@@ -11,7 +11,7 @@ from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from main.models import Ad, Tag, Seller
+from main.models import Ad, Seller
 from main.forms import UserForm, ImageFormset
 
 
@@ -31,26 +31,30 @@ class AdListView(ListView):
     ordering = ['-created_at']
     paginate_by = 5
 
+    def get_tags(self):
+        all_tags = Ad.objects.all().values("tags")
+        unique_tags = set()
+        for tags in all_tags:
+            unique_tags.update(tags['tags'])
+        return unique_tags
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
         context["banned_user"] = user.groups.filter(name="banned users")
+        context["tags"] = self.get_tags
         return context
 
     def get_queryset(self):
         tag = self.request.GET.get("tag")
         seller = self.request.GET.get("seller")
         if tag:
-            queryset = Ad.objects.filter(tag__name=tag)
+            queryset = Ad.objects.filter(tags__contains=[tag])
         elif seller:
             queryset = Ad.objects.filter(seller__user__username=seller)
         else:
             queryset = super().get_queryset()
         return queryset
-
-    extra_context = {
-        "tags": Tag.objects.all(),
-    }
 
 
 class AdDetailView(DetailView):
@@ -98,7 +102,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
 class AdCreateView(LoginRequiredMixin, CreateView):
     model = Ad
     template_name = "main/create_ad.html"
-    fields = ("name", "description", "category", "tag", "price")
+    fields = ("name", "description", "category", "tags", "price")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
@@ -132,7 +136,7 @@ class AdCreateView(LoginRequiredMixin, CreateView):
 class AdUpdateView(LoginRequiredMixin, UpdateView):
     model = Ad
     template_name = "main/update_ad.html"
-    fields = ("name", "description", "category", "tag", "price")
+    fields = ("name", "description", "category", "tags", "price")
     login_url = "/accounts/login/"
 
     def get_context_data(self):
