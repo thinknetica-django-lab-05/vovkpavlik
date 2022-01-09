@@ -1,8 +1,47 @@
-version: "3.9"
+version: '3'
+
 services:
+
+  db:
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=pavel
+      - POSTGRES_PASSWORD=12345678
+    ports:
+      - "5432:5432"
+
   redis:
     container_name: "myredis"
     image: "redis"
     command: redis-server --port 6379
     ports:
       - "6379:6379"
+
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ..:/app
+    command: >
+      sh -c "python3 manage.py wait_for_db &&
+             python3 manage.py migrate &&
+             python3 manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build: .
+    command: celery -A perfectsite worker -B
+    volumes:
+      - ..:/app
+    depends_on:
+      - redis
+
+volumes:
+  postgres:
