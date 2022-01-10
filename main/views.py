@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import UpdateView, CreateView, TemplateView
 from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.urls import reverse_lazy
 
 from main.models import Ad, Seller
@@ -50,13 +50,15 @@ class AdListView(ListView):
         tag = self.request.GET.get("tag")
         seller = self.request.GET.get("seller")
         query = self.request.GET.get("query")
-        print(query)
         if tag:
             queryset = Ad.objects.filter(tags__contains=[tag])
         elif seller:
             queryset = Ad.objects.filter(seller__user__username=seller)
         elif query:
-            queryset = Ad.objects.annotate(search=SearchVector('name', 'description'),).filter(search=query)
+            queryset = Ad.objects.annotate(
+                search=SearchVector('name', 'description'),
+            ).filter(search=SearchQuery(query))
+
         else:
             queryset = super().get_queryset()
         return queryset

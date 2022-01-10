@@ -89,13 +89,3 @@ for seller in Seller.objects.all():
     filter_sellers = Ad.objects.filter(seller=seller)
     filter_sellers.count()
 
-
-# Celery tasks
-
-from main.tasks import summing, hello
-hello_task = hello.delay()
-hello_task.status
-hello_task.result
-
-sum_task = summing.run(5151515, 2145)
-sum_task
