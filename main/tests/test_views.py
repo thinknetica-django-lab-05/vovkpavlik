@@ -6,7 +6,7 @@ from django.test import TestCase
 class RobotsTxtTests(TestCase):
 
     def test_get(self):
-        response = self.client.get("/robots.txt")
+        response = self.client.get("/robots.txt", True)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response["content-type"], "text/plain")
