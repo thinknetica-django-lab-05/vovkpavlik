@@ -32,26 +32,30 @@ class AdListView(ListView):
     ordering = ['-created_at']
     paginate_by = 5
 
-    def get_tags(self):
-        all_tags = Ad.objects.all().values("tags")
-        unique_tags = set()
-        for tags in all_tags:
-            unique_tags.update(tags['tags'])
-        return unique_tags
+    # def get_tags(self):
+    #     all_tags = Ad.objects.all().values("tags")
+    #     unique_tags = set()
+    #     for tags in all_tags:
+    #         unique_tags.update(tags['tags'])
+    #     return unique_tags
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
         context["banned_user"] = user.groups.filter(name="banned users")
-        context["tags"] = self.get_tags
+        # context["tags"] = self.get_tags
+        context["ads_unique_categories"] = Ad.objects.all().distinct("category")
         return context
 
     def get_queryset(self):
-        tag = self.request.GET.get("tag")
+        # tag = self.request.GET.get("tag")
+        category = self.request.GET.get("category")
         seller = self.request.GET.get("seller")
         query = self.request.GET.get("query")
-        if tag:
-            queryset = Ad.objects.filter(tags__contains=[tag])
+        # if tag:
+        #     queryset = Ad.objects.filter(tags__contains=[tag])
+        if category:
+            queryset = Ad.objects.filter(category__name=category)
         elif seller:
             queryset = Ad.objects.filter(seller__user__username=seller)
         elif query:
