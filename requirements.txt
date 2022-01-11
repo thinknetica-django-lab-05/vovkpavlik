@@ -14,3 +14,4 @@ twilio
 channels
 channels-redis
 psycopg2-binary
+djangorestframework

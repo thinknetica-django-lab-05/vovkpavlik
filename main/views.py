@@ -78,6 +78,7 @@ class AdDetailView(DetailView):
             )
         context = super().get_context_data()
         context["dynamic_price"] = cache.get("dynamic_price")
+        context["ads"] = Ad.objects.all().order_by("-created_at")[:5]
         return context
 
 
