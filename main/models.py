@@ -146,6 +146,7 @@ class Subscription(models.Model):
         приходят ежедневные сообщения о новых поступлениях.
     """
     user = models.ManyToManyField(User)
+    category = models.ManyToManyField(Category)
 
 
 class SMSLog(models.Model):
