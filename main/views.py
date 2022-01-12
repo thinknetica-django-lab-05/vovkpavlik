@@ -45,6 +45,9 @@ class AdListView(ListView):
         context["banned_user"] = user.groups.filter(name="banned users")
         # context["tags"] = self.get_tags
         context["ads_unique_categories"] = Ad.objects.all().distinct("category")
+        if self.request.GET.get("category"):
+            context["choosen_category"] = "choosen_category"
+
         return context
 
     def get_queryset(self):
