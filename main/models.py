@@ -145,11 +145,11 @@ class Subscription(models.Model):
         Пользователю, который подписан на объявления,
         приходят ежедневные сообщения о новых поступлениях.
     """
-    user = models.ManyToManyField(User, verbose_name="Пользователь")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name="Пользователь")
     category = models.ManyToManyField(Category, verbose_name="Категория")
 
     def __str__(self):
-        return f"{self.category}"
+        return f"{self.user}"
 
 
 class SMSLog(models.Model):
