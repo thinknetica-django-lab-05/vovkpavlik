@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.urls import reverse_lazy
 
-from main.models import Ad, Seller
+from main.models import Ad, User, Seller, Category, Subscription
 from main.forms import UserForm, ImageFormset
 
 
@@ -32,6 +32,7 @@ class AdListView(ListView):
     ordering = ['-created_at']
     paginate_by = 5
 
+
     # def get_tags(self):
     #     all_tags = Ad.objects.all().values("tags")
     #     unique_tags = set()
@@ -47,24 +48,25 @@ class AdListView(ListView):
         context["ads_unique_categories"] = Ad.objects.all().distinct("category")
         if self.request.GET.get("category"):
             context["choosen_category"] = "choosen_category"
-
         return context
 
     def get_queryset(self):
         # tag = self.request.GET.get("tag")
-        category = self.request.GET.get("category")
-        seller = self.request.GET.get("seller")
-        query = self.request.GET.get("query")
+        category_name = self.request.GET.get("category")
+        seller_name = self.request.GET.get("seller")
+        query_search = self.request.GET.get("query")
         # if tag:
         #     queryset = Ad.objects.filter(tags__contains=[tag])
-        if category:
-            queryset = Ad.objects.filter(category__name=category)
-        elif seller:
-            queryset = Ad.objects.filter(seller__user__username=seller)
-        elif query:
+        if category_name:
+            queryset = Ad.objects.filter(category__name=category_name)
+            subscription, _ = Subscription.objects.get_or_create(user=User.objects.get(username=self.request.user))
+            subscription.category.add(Category.objects.get(name=category_name))
+        elif seller_name:
+            queryset = Ad.objects.filter(seller__user__username=seller_name)
+        elif query_search:
             queryset = Ad.objects.annotate(
                 search=SearchVector('name', 'description'),
-            ).filter(search=SearchQuery(query))
+            ).filter(search=SearchQuery(query_search))
 
         else:
             queryset = super().get_queryset()

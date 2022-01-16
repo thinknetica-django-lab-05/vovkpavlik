@@ -67,9 +67,12 @@
             </form>
           </form>
 
-{#        !!!Будет кнопка подписаться!!!!#}
+
           {% if choosen_category %}
-            <a class="btn btn-success" role="button">Подписаться на обновления</a>
+            <a class="btn btn-success" name="subscribe" href="{% url 'ad-list' %}?category={{ request.GET.category }}" role="button">Подписаться на объявления</a>
+{#              <form action="{% url 'ad-list' %}" method="post">#}
+{#                <button class="btn btn-success" role="button" name="subscribe">Подписаться на объявления</button>#}
+{#              <form>#}
           {% endif %}
 
           <ul>

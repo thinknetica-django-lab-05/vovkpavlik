@@ -145,7 +145,7 @@ class Subscription(models.Model):
         Пользователю, который подписан на объявления,
         приходят ежедневные сообщения о новых поступлениях.
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name="Пользователь")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     category = models.ManyToManyField(Category, verbose_name="Категория")
 
     def __str__(self):
