@@ -71,13 +71,9 @@ class AdListView(ListView):
         category_name = request.GET.get("category")
         user = User.objects.get(username=request.user)
         if request.POST:
-            subscription, _ = Subscription.objects.get_or_create(user=user)
+            subscription, create = Subscription.objects.get_or_create(user=user)
             subscription.category.add(Category.objects.get(name=category_name))
             return HttpResponseRedirect(f"{self.request.path_info}?category={category_name}")
-
-
-    def get_success_url(self):
-        return reverse("ad-list")
 
 
 class AdDetailView(DetailView):
@@ -112,6 +108,7 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user_form"] = UserForm(instance=self.object.user)
+        context["subscription"] = Subscription.objects.get(user__username=self.object.user)
         return context
 
     def form_valid(self, form):
@@ -119,8 +116,14 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         user_form = UserForm(self.request.POST, instance=self.request.user)
         if user_form.is_valid():
             user_form.save()
-
         return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        subscription = Subscription.objects.get(user__username=self.request.user)
+        if "subscription" in request.POST:
+            category = Category.objects.get(name=request.POST.get('subscription'))
+            subscription.category.remove(category)
+        return HttpResponseRedirect(self.request.path_info)
 
 
 class AdCreateView(LoginRequiredMixin, CreateView):
