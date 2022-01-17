@@ -97,7 +97,7 @@ class AdDetailView(DetailView):
 class SellerUpdateView(LoginRequiredMixin, UpdateView):
     model = Seller
     template_name = "main/seller_update.html"
-    fields = "__all__"
+    fields = ("itn", "avatar", "phone")
     success_url = reverse_lazy("seller-info")
     login_url = "/accounts/login/"
 
