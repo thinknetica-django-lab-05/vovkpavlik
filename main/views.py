@@ -97,6 +97,7 @@ class AdDetailView(DetailView):
 class SellerUpdateView(LoginRequiredMixin, UpdateView):
     model = Seller
     template_name = "main/seller_update.html"
+    # fields = "__all__"
     fields = ("itn", "avatar", "phone")
     success_url = reverse_lazy("seller-info")
     login_url = "/accounts/login/"
@@ -111,19 +112,22 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
         context["subscription"] = Subscription.objects.get(user__username=self.object.user)
         return context
 
-    def form_valid(self, form):
-        self.object = form.save()
-        user_form = UserForm(self.request.POST, instance=self.request.user)
-        if user_form.is_valid():
-            user_form.save()
-        return super().form_valid(form)
-
     def post(self, request, *args, **kwargs):
         subscription = Subscription.objects.get(user__username=self.request.user)
+        self.object = self.get_object()
+        form = self.get_form()
+        user_form = UserForm(self.request.POST, instance=self.request.user)
+
         if "subscription" in request.POST:
             category = Category.objects.get(name=request.POST.get('subscription'))
             subscription.category.remove(category)
-        return HttpResponseRedirect(self.request.path_info)
+            return HttpResponseRedirect(self.request.path_info)
+
+        if form.is_valid() and user_form.is_valid():
+            form.save()
+            user_form.save()
+            return super().form_valid(form)
+        return super().form_invalid(form)
 
 
 class AdCreateView(LoginRequiredMixin, CreateView):

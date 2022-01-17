@@ -68,7 +68,6 @@
           </form>
 
           {% if choosen_category %}
-{#              <a class="btn btn-success" href="{% url 'ad-list' %}?category={{ request.GET.category }}" role="button">Подписаться на объявления</a>#}
             <form method="post">
               {% csrf_token %}
               {{ form.as_p }}
