@@ -62,17 +62,18 @@
 
           <form class="d-flex" style="padding-bottom: 20px">
             <form action="{% url 'ad-list' %}" method="post">
-              <input class="form-control me-2" type="search" name="query" placeholder="Искать по названию" aria-label="Search">
+              <input class="form-control me-2" type="search" name="query_search" placeholder="Искать по названию" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Поиск</button>
             </form>
           </form>
 
-
           {% if choosen_category %}
-            <a class="btn btn-success" name="subscribe" href="{% url 'ad-list' %}?category={{ request.GET.category }}" role="button">Подписаться на объявления</a>
-{#              <form action="{% url 'ad-list' %}" method="post">#}
-{#                <button class="btn btn-success" role="button" name="subscribe">Подписаться на объявления</button>#}
-{#              <form>#}
+{#              <a class="btn btn-success" href="{% url 'ad-list' %}?category={{ request.GET.category }}" role="button">Подписаться на объявления</a>#}
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button class="btn btn-success" type="submit">Подписаться на объявления</button>
+            </form>
           {% endif %}
 
           <ul>

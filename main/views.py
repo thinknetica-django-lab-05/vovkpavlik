@@ -10,7 +10,7 @@ from django.views.generic import UpdateView, CreateView, TemplateView
 from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from main.models import Ad, User, Seller, Category, Subscription
 from main.forms import UserForm, ImageFormset
@@ -54,23 +54,30 @@ class AdListView(ListView):
         # tag = self.request.GET.get("tag")
         category_name = self.request.GET.get("category")
         seller_name = self.request.GET.get("seller")
-        query_search = self.request.GET.get("query")
-        # if tag:
-        #     queryset = Ad.objects.filter(tags__contains=[tag])
+        query_search = self.request.GET.get("query_search")
         if category_name:
             queryset = Ad.objects.filter(category__name=category_name)
-            subscription, _ = Subscription.objects.get_or_create(user=User.objects.get(username=self.request.user))
-            subscription.category.add(Category.objects.get(name=category_name))
         elif seller_name:
             queryset = Ad.objects.filter(seller__user__username=seller_name)
         elif query_search:
             queryset = Ad.objects.annotate(
                 search=SearchVector('name', 'description'),
             ).filter(search=SearchQuery(query_search))
-
         else:
             queryset = super().get_queryset()
         return queryset
+
+    def post(self, request):
+        category_name = request.GET.get("category")
+        user = User.objects.get(username=request.user)
+        if request.POST:
+            subscription, _ = Subscription.objects.get_or_create(user=user)
+            subscription.category.add(Category.objects.get(name=category_name))
+            return HttpResponseRedirect(f"{self.request.path_info}?category={category_name}")
+
+
+    def get_success_url(self):
+        return reverse("ad-list")
 
 
 class AdDetailView(DetailView):
