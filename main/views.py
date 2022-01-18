@@ -32,7 +32,6 @@ class AdListView(ListView):
     ordering = ['-created_at']
     paginate_by = 5
 
-
     # def get_tags(self):
     #     all_tags = Ad.objects.all().values("tags")
     #     unique_tags = set()
@@ -40,14 +39,21 @@ class AdListView(ListView):
     #         unique_tags.update(tags['tags'])
     #     return unique_tags
 
+    def check_active_subscription(self, user):
+        subscription = Subscription.objects.get(user__username=user)
+        category = Category.objects.get(name=self.request.GET.get("category"))
+        return subscription.category.filter(name=category).exists()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
-        context["banned_user"] = user.groups.filter(name="banned users")
+
         # context["tags"] = self.get_tags
+        context["banned_user"] = user.groups.filter(name="banned users")
         context["ads_unique_categories"] = Ad.objects.all().distinct("category")
         if self.request.GET.get("category"):
-            context["choosen_category"] = "choosen_category"
+            context["active_subscription"] = self.check_active_subscription(user)
+            context["choosen_category_name"] = self.request.GET.get("category")
         return context
 
     def get_queryset(self):
