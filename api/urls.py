@@ -1,13 +1,8 @@
-from django.urls import path, include
-from rest_framework import routers
+from django.urls import path
 
-from . import views
+from .views import AdListView
 
-
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api/', include('rest_framework.urls', namespace='rest_framework')),
+    path('ads/', AdListView.as_view()),
 ]

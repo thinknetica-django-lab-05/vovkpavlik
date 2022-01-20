@@ -1,13 +1,14 @@
-from django.contrib.auth.models import User
-from rest_framework import viewsets
-from rest_framework import permissions
-from .serializers import UserSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .serializers import AdSerializer
+from main.models import Ad
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+class AdListView(APIView):
+    queryset = Ad.objects.all()
+
+    def get(self, request):
+        ads = Ad.objects.all()
+        serializer = AdSerializer(ads, many=True)
+        return Response({"ads": serializer.data})
