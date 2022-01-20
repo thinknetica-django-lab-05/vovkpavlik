@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'main',
+    'api',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -52,7 +53,7 @@ INSTALLED_APPS = [
     'constance',
     'sorl.thumbnail',
     'channels',
-    # 'rest_framework',
+    'rest_framework',
 
 ]
 
