@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 
-from main.models import Ad
+from main.models import Ad, Category, Seller
 
 
 # class AdSerializer(serializers.Serializer):
@@ -14,8 +15,8 @@ from main.models import Ad
 #     updated_at = serializers.DateTimeField(read_only=True)
 #     is_archive = serializers.BooleanField()
 #
-#     def create(self, validated_data):
-#         return Ad.objects.create(**validated_data)
+    # def create(self, validated_data):
+    #     return Ad.objects.create(**validated_data)
 #
 
 
@@ -29,3 +30,7 @@ class AdSerializer(serializers.ModelSerializer):
             "seller", "name", "category", "tags", "description",
             "price", "created_at", "updated_at", "is_archive"
         ]
+
+    def create(self, validated_data):
+        validated_data['category'] = Category.objects.get(name="Музыка")
+        return Ad.objects.create(**validated_data)
