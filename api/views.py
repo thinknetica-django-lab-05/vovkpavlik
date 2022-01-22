@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import AdSerializer
-from main.models import Ad, Seller
+from main.models import Ad, Seller, Category
 
 
 class AdListView(APIView):
@@ -18,7 +18,9 @@ class AdListView(APIView):
         ad = request.data.get("ad")
         serializer = AdSerializer(data=ad)
         seller = Seller.objects.get(user=self.request.user)
+        category = Category.objects.get(name=ad['category'])
         if serializer.is_valid():
             serializer.save(seller=seller)
+            serializer.save(category=category)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
