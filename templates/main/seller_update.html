@@ -1,12 +1,29 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+
   <form action="{% url 'seller-info' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     {{ user_form.as_p }}
-    <button type="submit">Update</button>
+    <button type="submit">Редактировать</button>
   </form>
 
+  <div class="subscription">
+    <h3>Ваши подписки:</h3>
+    {% if subscription.category.all %}
+      <p>Кликните, чтобы отписаться</p>
+      <form method="post">
+        {% csrf_token %}
+        {% for category in subscription.category.all %}
+        <li>
+          <button class="btn btn-secondary btn-sm" type="submit" name="subscription" value="{{ category }}">{{ category }}</button>
+        </li>
+        {% endfor %}
+      </form>
+    {% else %}
+      <p>У вас нет активных подписок</p>
+    {% endif %}
+  </div>
 
 {% endblock %}

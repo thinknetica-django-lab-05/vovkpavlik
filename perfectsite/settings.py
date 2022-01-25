@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'main',
+    'api',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
     'constance',
     'sorl.thumbnail',
     'channels',
+    'rest_framework',
+
 ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -210,6 +213,14 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
     }
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
 }
 
 

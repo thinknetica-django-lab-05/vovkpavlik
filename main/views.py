@@ -10,9 +10,9 @@ from django.views.generic import UpdateView, CreateView, TemplateView
 from constance import config
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
-from main.models import Ad, Seller
+from main.models import Ad, User, Seller, Category, Subscription
 from main.forms import UserForm, ImageFormset
 
 
@@ -32,36 +32,54 @@ class AdListView(ListView):
     ordering = ['-created_at']
     paginate_by = 5
 
-    def get_tags(self):
-        all_tags = Ad.objects.all().values("tags")
-        unique_tags = set()
-        for tags in all_tags:
-            unique_tags.update(tags['tags'])
-        return unique_tags
+    # def get_tags(self):
+    #     all_tags = Ad.objects.all().values("tags")
+    #     unique_tags = set()
+    #     for tags in all_tags:
+    #         unique_tags.update(tags['tags'])
+    #     return unique_tags
+
+    def check_active_subscription(self, user):
+        subscription = Subscription.objects.get(user__username=user)
+        category = Category.objects.get(name=self.request.GET.get("category"))
+        return subscription.category.filter(name=category).exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
+
+        # context["tags"] = self.get_tags
         context["banned_user"] = user.groups.filter(name="banned users")
-        context["tags"] = self.get_tags
+        context["ads_unique_categories"] = Ad.objects.all().distinct("category")
+        if self.request.GET.get("category"):
+            context["active_subscription"] = self.check_active_subscription(user)
+            context["choosen_category_name"] = self.request.GET.get("category")
         return context
 
     def get_queryset(self):
-        tag = self.request.GET.get("tag")
-        seller = self.request.GET.get("seller")
-        query = self.request.GET.get("query")
-        if tag:
-            queryset = Ad.objects.filter(tags__contains=[tag])
-        elif seller:
-            queryset = Ad.objects.filter(seller__user__username=seller)
-        elif query:
+        # tag = self.request.GET.get("tag")
+        category_name = self.request.GET.get("category")
+        seller_name = self.request.GET.get("seller")
+        query_search = self.request.GET.get("query_search")
+        if category_name:
+            queryset = Ad.objects.filter(category__name=category_name)
+        elif seller_name:
+            queryset = Ad.objects.filter(seller__user__username=seller_name)
+        elif query_search:
             queryset = Ad.objects.annotate(
                 search=SearchVector('name', 'description'),
-            ).filter(search=SearchQuery(query))
-
+            ).filter(search=SearchQuery(query_search))
         else:
             queryset = super().get_queryset()
         return queryset
+
+    def post(self, request):
+        category_name = request.GET.get("category")
+        user = User.objects.get(username=request.user)
+        if request.POST:
+            subscription, create = Subscription.objects.get_or_create(user=user)
+            subscription.category.add(Category.objects.get(name=category_name))
+            return HttpResponseRedirect(f"{self.request.path_info}?category={category_name}")
 
 
 class AdDetailView(DetailView):
@@ -78,13 +96,15 @@ class AdDetailView(DetailView):
             )
         context = super().get_context_data()
         context["dynamic_price"] = cache.get("dynamic_price")
+        context["ads"] = Ad.objects.all().order_by("-created_at")[:5]
         return context
 
 
 class SellerUpdateView(LoginRequiredMixin, UpdateView):
     model = Seller
     template_name = "main/seller_update.html"
-    fields = "__all__"
+    # fields = "__all__"
+    fields = ("itn", "avatar", "phone")
     success_url = reverse_lazy("seller-info")
     login_url = "/accounts/login/"
 
@@ -95,15 +115,25 @@ class SellerUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user_form"] = UserForm(instance=self.object.user)
+        context["subscription"] = Subscription.objects.get(user__username=self.object.user)
         return context
 
-    def form_valid(self, form):
-        self.object = form.save()
+    def post(self, request, *args, **kwargs):
+        subscription = Subscription.objects.get(user__username=self.request.user)
+        self.object = self.get_object()
+        form = self.get_form()
         user_form = UserForm(self.request.POST, instance=self.request.user)
-        if user_form.is_valid():
-            user_form.save()
 
-        return super().form_valid(form)
+        if "subscription" in request.POST:
+            category = Category.objects.get(name=request.POST.get('subscription'))
+            subscription.category.remove(category)
+            return HttpResponseRedirect(self.request.path_info)
+
+        if form.is_valid() and user_form.is_valid():
+            form.save()
+            user_form.save()
+            return super().form_valid(form)
+        return super().form_invalid(form)
 
 
 class AdCreateView(LoginRequiredMixin, CreateView):
