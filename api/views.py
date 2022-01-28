@@ -1,26 +1,37 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import DestroyAPIView
+from rest_framework import viewsets
 
-from .serializers import AdSerializer
+from .serializers import AdListSerializer, AdDetailSerializer
 from main.models import Ad, Seller, Category
 
 
-class AdListView(APIView):
+class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
+    serializer_class = AdDetailSerializer
 
-    def get(self, request):
-        ads = Ad.objects.all()
-        serializer = AdSerializer(ads, many=True)
-        return Response({"ads": serializer.data})
+    def get_serializer_class(self):
+        if self.action in ["list"]:
+            return AdListSerializer
+        return super().get_serializer_class()
 
-    def post(self, request):
-        ad = request.data.get("ad")
-        serializer = AdSerializer(data=ad)
+    def create(self, request, *args, **kwargs):
         seller = Seller.objects.get(user=self.request.user)
-        category = Category.objects.get(name=ad['category'])
-        if serializer.is_valid():
-            serializer.save(seller=seller)
-            serializer.save(category=category)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        category = Category.objects.get(name=request.data['category'])
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(seller=seller)
+        serializer.save(category=category)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def destroy(self, request, *args, **kwargs):
+        seller = Seller.objects.get(user=self.request.user)
+        instance = self.get_object()
+        if instance.seller == seller:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

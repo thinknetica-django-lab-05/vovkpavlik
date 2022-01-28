@@ -99,8 +99,6 @@ class Ad(BaseModel):
         Category,
         on_delete=models.CASCADE,
         verbose_name="Категория",
-        null=True,
-        blank=True
     )
     description = models.TextField("Описание")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
