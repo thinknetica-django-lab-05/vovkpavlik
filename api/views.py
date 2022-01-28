@@ -16,7 +16,7 @@ class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
     pagination_class = SmallResultsSetPagination
-    filterset_fields = ['category']
+    filterset_fields = ["category"]
 
     def get_serializer_class(self):
         if self.action in ["list"]:
