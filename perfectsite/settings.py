@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'channels',
     'rest_framework',
-
+    'django_filters',
 ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -218,8 +218,10 @@ SOCIALACCOUNT_PROVIDERS = {
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+            'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
