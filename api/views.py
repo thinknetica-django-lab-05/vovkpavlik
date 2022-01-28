@@ -1,5 +1,3 @@
-from django.shortcuts import get_object_or_404
-
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -18,6 +16,7 @@ class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
     pagination_class = SmallResultsSetPagination
+    filterset_fields = ['category']
 
     def get_serializer_class(self):
         if self.action in ["list"]:
