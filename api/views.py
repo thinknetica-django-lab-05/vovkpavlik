@@ -3,14 +3,21 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 
 from .serializers import AdListSerializer, AdDetailSerializer
 from main.models import Ad, Seller, Category
 
 
+class SmallResultsSetPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+
+
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
+    pagination_class = SmallResultsSetPagination
 
     def get_serializer_class(self):
         if self.action in ["list"]:
@@ -45,3 +52,6 @@ class AdViewSet(viewsets.ModelViewSet):
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+
