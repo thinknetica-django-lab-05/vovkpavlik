@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import DestroyAPIView
 from rest_framework import viewsets
 
 from .serializers import AdListSerializer, AdDetailSerializer
@@ -27,6 +26,17 @@ class AdViewSet(viewsets.ModelViewSet):
         serializer.save(category=category)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def update(self, request, *args, **kwargs):
+        seller = Seller.objects.get(user=self.request.user)
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        if instance.seller == seller:
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def destroy(self, request, *args, **kwargs):
         seller = Seller.objects.get(user=self.request.user)
