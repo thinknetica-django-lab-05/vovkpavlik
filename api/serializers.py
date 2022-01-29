@@ -30,4 +30,3 @@ class AdDetailSerializer(serializers.ModelSerializer):
             "seller", "name", "category", "tags", "description",
             "price", "created_at", "updated_at", "is_archive"
         ]
-

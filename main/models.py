@@ -121,7 +121,7 @@ class ArchiveAds(Ad):
         proxy = True
 
 
-class AdPicture(BaseModel):
+class AdPicture(models.Model):
     """
         Модель изображения для объявлений.
         Связана с моделью объявления.
