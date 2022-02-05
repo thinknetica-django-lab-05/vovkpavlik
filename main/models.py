@@ -130,7 +130,8 @@ class AdPicture(models.Model):
     ad = models.ForeignKey(
         Ad,
         on_delete=models.CASCADE,
-        verbose_name="Объявление"
+        verbose_name="Объявление",
+        related_name="ad_picture"
     )
     image = models.ImageField(
         upload_to="images/ads/",
