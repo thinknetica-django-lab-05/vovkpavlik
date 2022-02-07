@@ -15,7 +15,7 @@
           <div class="ad-section">
             <div class="row">
               <div class="col-5">
-                {% for picture in ad.adpicture_set.all %}
+                {% for picture in ad.ad_picture.all %}
                   <img src="{{ picture.image.url }}" width=100%, alt="Картинка">
                 {% endfor %}
               </div>

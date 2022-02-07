@@ -17,6 +17,7 @@ class AdPictureSerializer(serializers.ModelSerializer):
     """
         Сериализитор для картинок объявлений
     """
+
     class Meta:
         model = AdPicture
         fields = ["id", "image"]
@@ -38,7 +39,7 @@ class AdListSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        ad_pictures_data = validated_data.pop('ad_picture')
+        ad_pictures_data = validated_data.pop("ad_picture")
         ad = Ad.objects.create(**validated_data)
         for ad_picture_data in ad_pictures_data:
             AdPicture.objects.create(ad=ad, **ad_picture_data)

@@ -12,7 +12,7 @@
           <div class="latest-ads-section">
             <div class="row">
               <h4 align="center"><a href="{% url 'ad-detail' slug=ad.id %}">{{ ad.name}}</a></h4>
-              {% for picture in ad.adpicture_set.all %}
+              {% for picture in ad.ad_picture.all %}
                 <img src="{{ picture.image.url }}" width=100%, alt="Картинка">
               {% endfor %}
               <h6>Стоимость: {{ ad.price }} руб.</h6>
@@ -23,7 +23,7 @@
       </div>
       <div class="col-6">
         <h1 align="center">{{ object.name }}</h1>
-        {% for picture in object.adpicture_set.all %}
+        {% for picture in object.ad_picture.all %}
           <img src="{{ picture.image.url }}" width="600" alt="Картинка">
         {% endfor %}
           <h4>Стоимость: {{ dynamic_price }} руб.</h4>
